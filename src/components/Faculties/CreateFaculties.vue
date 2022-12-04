@@ -36,7 +36,7 @@ export default {
   data: () => ({
     newName:'',
     newShortName:'',
-    mistake:'Невірно введена Абревіатура',
+    mistake:'',
      }),
 
 
@@ -53,10 +53,12 @@ export default {
 
 
       this.mistake='';
+
       await axios.post('http://localhost:8080/faculties/create',{
-        name: this.newName, short_name:this.newShortName
+      name: this.newName, shortName: this.newShortName
       })
 
+      window.location.href = '/viewFaculties';
     },
   }
 }

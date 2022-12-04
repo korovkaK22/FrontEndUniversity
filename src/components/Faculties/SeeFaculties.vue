@@ -17,7 +17,7 @@
     <a @click=" deleteFaculties();" class="red-shine-button">Видалити</a>
      </div>
      <div class=itemButton>
-       <a  class="green-shine-button">Редагувати</a>
+        <router-link v-bind:to="'/changeFaculties/?id='+id"> <a  class="green-shine-button">Редагувати</a></router-link>
      </div>
    </div>
 
