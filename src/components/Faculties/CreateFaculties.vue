@@ -4,17 +4,20 @@
 
     <form class="registrationForm">
       <div class="group">
-        <input type="text" required>
+        <input type="text" v-model="newName" required>
         <span class="bar"></span>
         <label>Назва Факультету</label>
       </div>
       <div class="group">
-        <input type="text" required>
+        <input type="text" v-model="newShortName" required>
         <span class="bar"></span>
         <label>Абревіатура</label>
       </div>
       <div class=itemButton>
-        <a @click=" deleteFaculties();" class="green-shine-button">Створити</a>
+        <a @click=" createNew();" class="green-shine-button">Створити</a>
+      </div>
+      <div class=mistake>
+      {{mistake}}
       </div>
     </form>
 
@@ -26,19 +29,33 @@
 
 <script>
 import axios from "axios";
-import
+import {InputValidation} from "@/components/Validation/InputValidation";
 
 export default {
   name: "CreateFaculties",
   data: () => ({
+    newName:'',
+    newShortName:'',
+    mistake:'Невірно введена Абревіатура',
      }),
 
 
   methods: {
     async createNew() {
+      if (!InputValidation.checkName(this.newName)){
+      this.mistake='Невірно введене ім\'я'
+      return;
+      }
+      if (!InputValidation.checkShortName(this.newShortName)){
+        this.mistake='Невірно введена Абревіатура'
+      return;
+      }
 
 
-      this.lists = (await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
+      this.mistake='';
+      await axios.post('http://localhost:8080/faculties/create',{
+        name: this.newName, short_name:this.newShortName
+      })
 
     },
   }
@@ -74,6 +91,14 @@ a {
 
 }
 
+.mistake{
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font:1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+}
+
 
 
 /*=========Інпути красиві==========*/
@@ -89,7 +114,7 @@ input {
   display: block;
   width: 300px;
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #eaeaea;
 }
 input:focus {
   outline: none;
@@ -194,10 +219,11 @@ input:focus ~ .bar:after {
 
 
 .green-shine-button {
+
   text-decoration: none;
   display: inline-block;
   padding: 10px 30px;
-  margin: 10px 20px;
+  margin: 10px 40px;
   position: relative;
   overflow: hidden;
   border: 2px solid #53b43b;
