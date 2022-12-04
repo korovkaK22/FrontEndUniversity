@@ -1,0 +1,99 @@
+/*=========ШАПКА======*/
+
+/*Комп'ютер*/
+@media  screen and (min-width:560px) {
+    .myHeader {
+        background: rgba(94, 142, 178, 0.13);
+        color: rgba(33, 33, 49, 0.98);
+
+        font-weight: 500;
+        border-radius: 0.5vw;
+        width: 99%;
+        margin: 0 auto;
+
+        display: flex;
+        justify-content:space-between;
+    }
+
+    .myHeader a {
+        color: #1d191f;
+        text-decoration: none;
+    }
+
+    .row {
+        justify-content: flex-end;
+        display: flex;
+        align-items: center;
+    }
+
+    .item {
+        padding: 0.05vw;
+        font-size: 1.5vw;
+        margin-right: 0.6vw;
+    }
+
+    .item:hover {
+        background: rgba(29, 25, 31, 0.08);
+        border-radius: 4px;
+    }
+
+    .row img {
+        transition-delay: 0.01s;
+        width: 3.2vw;
+        padding-left: 0.02vw;
+        padding-top: 0.02vw;
+    }
+
+    .row img:hover {
+        transform: scale(1.2);
+    }
+
+    /*Вилітаюча менюшка*/
+    .dropdown-list {
+        margin-top: 0.1vw;
+        margin-left: -0.5vw;
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 5vw;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        font-size: 1.5vw;
+        animation: appearList 0.15s linear;
+    }
+
+    @keyframes rotateArrow {
+        0% {
+            rotate: none;
+        }
+        100% {
+            rotate: 180deg;
+        }
+    }
+
+    @keyframes appearList {
+        from {
+            opacity: 0
+        }
+        to {
+            opacity: 1
+        }
+    }
+
+
+
+    .blog:hover .fa-arrow-down {
+        animation: rotateArrow 0.05s 0s linear forwards;
+    }
+
+
+    .item:hover .dropdown-list {
+        display: block;
+    }
+
+
+}
+
+
+
+
+

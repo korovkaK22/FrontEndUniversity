@@ -1,0 +1,19 @@
+
+/*Комп'ютер*/
+@media  screen and (min-width: 560px) {
+    footer {
+
+        height: auto;
+        background: linear-gradient(to top, rgba(62, 102, 178, 0.13), rgba(166, 39, 143, 0.21)) fixed;
+        border-radius: 1vw;
+        padding-bottom: 0.8vw;
+        padding-top: 1vw;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+
+    }
+
+
+
+}
