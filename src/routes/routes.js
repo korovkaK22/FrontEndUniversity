@@ -19,6 +19,8 @@ import ChangeDisciplines from "@/components/Disciplines/ChangeDisciplines";
 
 import ViewDepartments from "@/components/Departments/ViewDepartments";
 import ChangeDepartments from "@/components/Departments/ChangeDepartments";
+import CreateDepartments from "@/components/Departments/ViewDepartments";
+import SeeDepartments from "@/components/Departments/SeeDepartments";
 
 import ViewSchedules from "@/components/Schedules/ViewSchedules";
 import ChangeSchedules from "@/components/Schedules/ChangeSchedules";
@@ -52,6 +54,8 @@ const routes = [
 
     {path: '/viewDepartments', component: ViewDepartments},
     {path: '/changeDepartments', component: ChangeDepartments},
+    {path: '/seeDepartments', component: SeeDepartments},
+    {path: '/createDepartments', component: CreateDepartments},
 
     {path: '/viewSchedules', component: ViewSchedules},
     {path: '/changeSchedules', component: ChangeSchedules},

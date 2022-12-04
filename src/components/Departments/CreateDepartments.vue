@@ -7,7 +7,7 @@
       <div class="group">
         <input type="text" v-model="newName" required>
         <span class="bar"></span>
-        <label>Назва Факультету</label>
+        <label>Назва Відділу</label>
       </div>
 
       <div class="group">
@@ -16,12 +16,18 @@
         <label>Абревіатура</label>
       </div>
 
+      <div class="group">
+        <input type="text" v-model="newShortName" required>
+        <span class="bar"></span>
+        <label>Факультет</label>
+      </div>
+
       <div class=itemButton>
         <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
 
       <div class=mistake>
-      {{mistake}}
+        {{mistake}}
       </div>
     </form>
 
@@ -36,32 +42,32 @@ import axios from "axios";
 import {InputValidation} from "@/components/Validation/InputValidation";
 
 export default {
-  name: "CreateFaculties", //===========
+  name: "CreateDepartments", //===========
   data: () => ({
-    BType:'Faculties', //====================
-    type:'faculties', //====================
+    BType:'Departments', //====================
+    type:'departments', //====================
     newName:'',
     newShortName:'',
     mistake:'',
-     }),
+  }),
 
 
   methods: {
     async createNew() { //===================
       if (!InputValidation.checkName(this.newName)){
-      this.mistake='Невірно введене ім\'я'
-      return;
+        this.mistake='Невірно введене ім\'я'
+        return;
       }
       if (!InputValidation.checkShortName(this.newShortName)){
         this.mistake='Невірно введена Абревіатура'
-      return;
+        return;
       }
 
 
       this.mistake='';
 
       await axios.post('http://localhost:8080/'+this.type+'/create',{
-      name: this.newName, shortName: this.newShortName
+        name: this.newName, shortName: this.newShortName
       })
 
       window.location.href = '/view'+this.BType;

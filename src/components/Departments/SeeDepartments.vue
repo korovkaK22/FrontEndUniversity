@@ -2,40 +2,41 @@
   <div class="Vue">
 
 
-  <div v-if="id!==0">
+    <div v-if="id!==0">
 
-    <div class=titleText>Факультет <span class=italic><br>" {{ data.name }} "  </span></div>
+      <div class=titleText>Департамент <span class=italic><br>" {{ data.name }} "  </span></div>
 
-    <div class=description>
-      Назва: <span class=italic> {{ data.name }}; </span><br>
-      Абревіатура:  <span class=italic> {{ data.short_name }};  </span> <br>
+      <div class=description>
+        Назва: <span class=italic> {{ data.name }}; </span><br>
+        Абревіатура:  <span class=italic> {{ data.short_name }};  </span> <br>
+        Факультет:  <span class=italic> {{ data.faculty_id }};  </span> <br>
+      </div>
+
+      <!--Кнопочки-->
+      <div class=rowButton>
+        <div class=itemButton>
+          <a @click=" deleteObject();" class="red-shine-button">Видалити</a>
+        </div>
+        <div class=itemButton>
+          <router-link v-bind:to="'/change'+BType+'/?id='+id"> <a  class="green-shine-button">Редагувати</a></router-link>
+        </div>
+      </div>
+
     </div>
 
-    <!--Кнопочки-->
-   <div class=rowButton>
-     <div class=itemButton>
-    <a @click=" deleteObject();" class="red-shine-button">Видалити</a>
-     </div>
-     <div class=itemButton>
-        <router-link v-bind:to="'/change'+BType+'/?id='+id"> <a  class="green-shine-button">Редагувати</a></router-link>
-     </div>
-   </div>
-
-  </div>
-
-<!--    Факультет не найшли-->
+    <!--    Факультет не найшли-->
     <div v-else>
-    <div class="dontFound">
-        Факультет не знайдено.<br> Перевірте правильність набору
+      <div class="dontFound">
+        Департамент не знайдено.<br> Перевірте правильність набору
+      </div>
     </div>
-  </div>
 
   </div>
 
+  <div>
     <div>
-      <div>
 
-  </div>
+    </div>
   </div>
 
 
@@ -57,10 +58,10 @@ import {CheckExist} from "@/components/Validation/CheckExist";
 
 
 export default {
-  name: "SeeFaculties", //=================
+  name: "SeeDepartments", //====================
   data: () => ({
-    BType:'Faculties', //====================
-    type:'faculties', //====================
+    BType:'Departments', //====================
+    type:'departments', //====================
     data: [],
     id: 0,
     mistake:'',
@@ -76,7 +77,7 @@ export default {
     async initialise() {
       //Вичислить id
       let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkFacultyById(res))) { //=================
+      if (res === '' || !(await CheckExist.checkDepartmentById(res))) {
         return;
       }
 
@@ -89,7 +90,7 @@ export default {
     async deleteObject(){
       this.mistake= (await (axios.delete('http://localhost:8080/'+this.type+'/delete?id=' + this.id))).data;
       if (this.mistake===''){
-      window.location.href = '/view'+this.BType+''}
+        window.location.href = '/view'+this.BType+''}
       else{
         //Помилка пішла
         this.appearMistakes="Виникла помилка при видаленні..."

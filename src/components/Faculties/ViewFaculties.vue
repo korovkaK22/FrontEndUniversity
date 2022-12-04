@@ -1,9 +1,7 @@
 <template>
-
   <div class="Vue">
 
     <div class=titleText>Факультети</div>
-
 
 
     <div class=list>
@@ -18,7 +16,7 @@
               <tbody>
               <tr v-for="l in lists" :key="l.id">
                 <td>
-                  <router-link v-bind:to="'/seeFaculties/?id='+l.id">{{ l.name }}</router-link> <br>
+                  <router-link v-bind:to="('/see'+BType+'/?id='+l.id)">{{ l.name }}</router-link> <br>
                 </td>
                 <td>
                   {{ l.short_name }}
@@ -34,12 +32,15 @@
 import axios from "axios";
 
 
+
 export default {
   name: "ViewFaculties",
 
 
-
   data: () => ({
+    BType:'Faculties', //====================
+    type:'faculties', //====================
+
     lists: [],
 
   }),
@@ -49,15 +50,11 @@ export default {
 
   methods: {
     async initialise() {
-      this.lists = (await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
+      this.lists = (await (axios.get('http://localhost:8080/'+this.type+'/viewALL'))).data;
       },
-
-
-
 
   }
 }
-
 
 </script>
 

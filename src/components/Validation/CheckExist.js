@@ -17,6 +17,11 @@ export class CheckExist {
         return result!=='';
     }
 
+    static async checkDepartmentById(id){
+        let result=  (await (axios.get('http://localhost:8080/departments/view/'+id))).data;
+        return result!=='';
+    }
+
 
 
 
