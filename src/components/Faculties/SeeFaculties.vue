@@ -1,13 +1,50 @@
 <template>
+  <div class="Vue">
+
 
   <span v-if="id!==0">
-    {{ data.name }}
-    {{ data.short_name }}
-  </span>
-  <span v-else>
-    Немає такого користувача
+
+    <div class=titleText>Факультет <span class=italic><br>" {{ data.name }} "  </span></div>
+
+    <div class=description>
+      Назва:  {{ data.name }}; <br>
+      Абревіатура:  {{ data.short_name }};  <br>
+    </div>
+
+    <!--Кнопочки-->
+   <div class=rowButton>
+     <div class=itemButton>
+    <a @click=" deleteFaculties();" class="red-shine-button">Видалити</a>
+     </div>
+     <div class=itemButton>
+       <a  class="green-shine-button">Редагувати</a>
+     </div>
+   </div>
+
   </span>
 
+<!--    Факультет не найшли-->
+    <span v-else>
+    <div class="dontFound">
+        Факультет не знайдено.<br> Перевірте правильність набору
+    </div>
+  </span>
+  </div>
+
+<!--    Видалили Факультет-->
+
+<!--     <div class="dontFound">-->
+<!--        Факультет було видалено.-->
+<!--    </div>-->
+<!--       <router-link to="/viewFaculties">-->
+<!--      <div class=itemButton>-->
+<!--       <a  class="green-shine-button">До Факультетів</a>-->
+<!--     </div>-->
+<!--      </router-link>-->
+    <div>
+      <div>
+  </div>
+  </div>
 
 
 
@@ -16,28 +53,41 @@
 <script>
 import axios from "axios";
 
-let id = 0;
+
 export default {
   name: "SeeFaculties",
-
   data: () => ({
     data: [],
-
+    id: 0,
   }),
   mounted() {
     this.initialise();
-
-
   },
 
+
   methods: {
+
     async initialise() {
-      id = new URL(location.href).searchParams.get('id');
-      console.log(id)
-      if (id !== 0) {
-        this.data = (await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
+      //Вичислить id
+      let res = new URL(location.href).searchParams.get('id');
+      if (res === '') {
+        return;
+      }
+      //Підгрузка даних
+      this.id = res
+      if (this.id !== 0) {
+        this.data = (await (axios.get('http://localhost:8080/faculties/view/' + this.id))).data;
       }
     },
+
+
+    async deleteFaculties(){
+      await axios.delete('http://localhost:8080/faculties/delete?id=' + this.id);
+      window.location.href = '/viewFaculties'
+    }
+
+
+
 
 
   }
@@ -47,5 +97,122 @@ export default {
 </script>
 
 <style scoped>
+
+
+.Vue {
+  font-size: 2vw;
+  margin: 1vw auto;
+  width: 100%;
+}
+
+.dontFound {
+  text-align: center;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.description {
+  text-align: center;
+  margin-bottom: 2vw;
+}
+
+.titleText {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 4vw;
+  padding-bottom: 2vw;
+}
+/*===flex для кнопок==== */
+.rowButton{
+  display: flex;
+
+}
+
+.itemButton{
+  margin:0 auto;
+  align-self:center;
+
+}
+
+
+
+
+/*=======Кнопочки========== */
+
+.red-shine-button {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #fe6637;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  color: #fe6637;
+  transition: .2s ease-in-out;
+}
+
+.red-shine-button:before {
+  content: "";
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+
+.red-shine-button:hover {
+  background: #fe6637;
+  color: #fff;
+}
+
+.red-shine-button:hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
+}
+
+
+
+.green-shine-button {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #53b43b;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  color: #52b33c;
+  transition: .2s ease-in-out;
+}
+
+.green-shine-button:before {
+  content: "";
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+
+.green-shine-button:hover {
+  background: #51b23d;
+  color: #fff;
+}
+
+.green-shine-button:hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
+}
+
+
 
 </style>

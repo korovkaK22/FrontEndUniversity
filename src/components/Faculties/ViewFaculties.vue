@@ -17,8 +17,12 @@
               </thead>
               <tbody>
               <tr v-for="l in lists" :key="l.id">
-                <td>{{ l.name }}</td>
-                <td>{{ l.short_name }}</td>
+                <td>
+                  <router-link v-bind:to="'/seeFaculties/?id='+l.id">{{ l.name }}</router-link> <br>
+                </td>
+                <td>
+                  {{ l.short_name }}
+                </td>
               </tr>
               </tbody>
             </table>
@@ -46,7 +50,11 @@ export default {
   methods: {
     async initialise() {
       this.lists = (await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
-    },
+      },
+
+
+
+
   }
 }
 
@@ -62,9 +70,6 @@ export default {
   width: 100%;
 }
 
-.list {
-  font-size: 3vw;
-}
 
 .titleText {
   margin: 0 auto;
@@ -73,6 +78,10 @@ export default {
   padding-bottom: 2vw;
 }
 
+a {
+  color: #3c5994;
+  text-decoration: none;
+}
 
 /*=======Табличка красива======*/
 
