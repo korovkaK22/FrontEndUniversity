@@ -16,7 +16,7 @@
 
 
       <div class="item">
-        <router-link to="/faq">FAQ</router-link>
+        <router-link to="/viewFaq">FAQ</router-link>
       </div>
 
 

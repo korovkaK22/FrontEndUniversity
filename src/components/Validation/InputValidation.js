@@ -2,20 +2,17 @@
 
 export class InputValidation {
 
+    static checkQnA(name){
+        return !(name.length<3 || name.length>=254)
+    }
+
+
     static checkName(name){
-        let result=true;
-        if (name.length<3 || name.length>=32){
-            result= false;
-        }
-        return result;
+        return !(name.length<3 || name.length>=32)
     }
 
     static checkShortName(name){
-        let result=true;
-        if (name.length<3 || name.length>=32){
-            result= false;
-        }
-        return result;
+        return !(name.length<3 || name.length>=32)
     }
 
 

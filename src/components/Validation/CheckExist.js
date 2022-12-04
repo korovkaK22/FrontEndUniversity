@@ -12,6 +12,11 @@ export class CheckExist {
         return result!=='';
     }
 
+    static async checkFAQById(id){
+        let result=  (await (axios.get('http://localhost:8080/faq/view/'+id))).data;
+        return result!=='';
+    }
+
 
 
 

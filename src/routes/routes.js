@@ -1,6 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router/dist/vue-router.esm-bundler'
 import Home from '../components/Home/Home.vue'
-import FAQ from '../components/FAQ/FAQ.vue'
+
+import ViewFAQ from '../components/FAQ/FAQ.vue'
+import SeeFAQ from '../components/FAQ/SeeFAQ.vue'
+import CreateFAQ from '../components/FAQ/CreateFAQ.vue'
+import ChangeFAQ from '../components/FAQ/ChangeFAQ.vue'
 
 import ViewFaculties from "@/components/Faculties/ViewFaculties";
 import ChangeFaculties from "@/components/Faculties/ChangeFaculties";
@@ -30,7 +34,10 @@ const routes = [
     {path: '/', component: Home},
     {path: '/home', component: Home},
 
-    {path: '/faq', component: FAQ},
+    {path: '/viewFaq', component: ViewFAQ},
+    {path: '/seeFaq', component: SeeFAQ},
+    {path: '/changeFaq', component: ChangeFAQ},
+    {path: '/createFaq', component: CreateFAQ},
 
     {path: '/viewFaculties', component: ViewFaculties},
     {path: '/changeFaculties', component: ChangeFaculties},

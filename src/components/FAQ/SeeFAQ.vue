@@ -4,11 +4,10 @@
 
   <div v-if="id!==0">
 
-    <div class=titleText>Факультет <span class=italic><br>" {{ data.name }} "  </span></div>
+    <div class=titleText> <span class=italic>{{ data.question }} </span></div>
 
     <div class=description>
-      Назва: <span class=italic> {{ data.name }}; </span><br>
-      Абревіатура:  <span class=italic> {{ data.short_name }};  </span> <br>
+     <span class=italic> {{ data.answer }} </span><br>
     </div>
 
     <!--Кнопочки-->
@@ -17,32 +16,21 @@
     <a @click=" deleteFaculties();" class="red-shine-button">Видалити</a>
      </div>
      <div class=itemButton>
-        <router-link v-bind:to="'/changeFaculties/?id='+id"> <a  class="green-shine-button">Редагувати</a></router-link>
+        <router-link v-bind:to="'/changeFaq/?id='+id"> <a  class="green-shine-button">Редагувати</a></router-link>
      </div>
    </div>
 
   </div>
 
-<!--    Факультет не найшли-->
+<!--    не найшли-->
     <div v-else>
     <div class="dontFound">
-        Факультет не знайдено.<br> Перевірте правильність набору
+        Питання не знайдено.<br> Перевірте правильність набору
     </div>
   </div>
 
   </div>
 
-
-<!--    Видалили Факультет-->
-
-<!--     <div class="dontFound">-->
-<!--        Факультет було видалено.-->
-<!--    </div>-->
-<!--       <router-link to="/viewFaculties">-->
-<!--      <div class=itemButton>-->
-<!--       <a  class="green-shine-button">До Факультетів</a>-->
-<!--     </div>-->
-<!--      </router-link>-->
     <div>
       <div>
 
@@ -68,7 +56,7 @@ import {CheckExist} from "@/components/Validation/CheckExist";
 
 
 export default {
-  name: "SeeFaculties",
+  name: "SeeFAQ",
   data: () => ({
     data: [],
     id: 0,
@@ -85,20 +73,20 @@ export default {
     async initialise() {
       //Вичислить id
       let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkFacultyById(res))) {
+      if (res === '' || !(await CheckExist.checkFAQById(res))) {
         return;
       }
 
       //Підгрузка даних
       this.id = res
-      this.data = (await (axios.get('http://localhost:8080/faculties/view/' + this.id))).data;
+      this.data = (await (axios.get('http://localhost:8080/faq/view/' + this.id))).data;
     },
 
 
     async deleteFaculties(){
-      this.mistake= (await (axios.delete('http://localhost:8080/faculties/delete?id=' + this.id))).data;
+      this.mistake= (await (axios.delete('http://localhost:8080/faq/delete?id=' + this.id))).data;
       if (this.mistake===''){
-      window.location.href = '/viewFaculties'}
+      window.location.href = '/viewFaq'}
       else{
         //Помилка пішла
         this.appearMistakes="Виникла помилка при видаленні..."
@@ -133,16 +121,20 @@ export default {
 }
 
 .description {
+  margin:0 auto;
   text-align: center;
-  margin-bottom: 2vw;
+  width: 50%;
+
 }
 
 .titleText {
   margin: 0 auto;
   text-align: center;
-  font-size: 4vw;
+  font-size: 3vw;
   padding-bottom: 2vw;
 }
+
+
 /*===flex для кнопок==== */
 .rowButton{
   margin: 1vw auto;
@@ -151,8 +143,6 @@ export default {
 }
 
 .itemButton{
-  margin:0 auto;
-  align-self:center;
 
 }
 
