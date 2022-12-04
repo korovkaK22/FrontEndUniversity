@@ -139,7 +139,7 @@ export default {
 
 
 
-/*=======Кнопочки========== */
+/*=======Кнопочки красиві========== */
 
 .red-shine-button {
   text-decoration: none;

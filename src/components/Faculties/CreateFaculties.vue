@@ -13,7 +13,12 @@
         <span class="bar"></span>
         <label>Абревіатура</label>
       </div>
+      <div class=itemButton>
+        <a @click=" deleteFaculties();" class="green-shine-button">Створити</a>
+      </div>
     </form>
+
+
 
 
   </div>
@@ -21,21 +26,16 @@
 
 <script>
 import axios from "axios";
+import
 
 export default {
   name: "CreateFaculties",
   data: () => ({
-    lists: [],
+     }),
 
-  }),
-  mounted() {
-    this.initialise();
-
-
-  },
 
   methods: {
-    async initialise() {
+    async createNew() {
 
 
       this.lists = (await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
@@ -77,7 +77,7 @@ a {
 
 
 /*=========Інпути красиві==========*/
-/* form starting stylings ------------------------------- */
+/* form starting stylings */
 .group {
   position: relative;
   margin-bottom: 30px;
@@ -95,7 +95,7 @@ input:focus {
   outline: none;
 }
 
-/* LABEL ======================================= */
+/* LABEL */
 input{
   background: none;
 
@@ -121,7 +121,7 @@ input:focus ~ label, input:valid ~ label {
 }
 
 
-/* BOTTOM BARS ================================= */
+/* BOTTOM BARS  */
 .bar {
   position: relative;
   display: block;
@@ -149,6 +149,83 @@ input:focus ~ label, input:valid ~ label {
 input:focus ~ .bar:before,
 input:focus ~ .bar:after {
   width: 50%;
+}
+
+
+
+
+/*=======Кнопочки красиві========== */
+
+.red-shine-button {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #fe6637;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  color: #fe6637;
+  transition: .2s ease-in-out;
+}
+
+.red-shine-button:before {
+  content: "";
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+
+.red-shine-button:hover {
+  background: #fe6637;
+  color: #fff;
+}
+
+.red-shine-button:hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
+}
+
+
+
+.green-shine-button {
+  text-decoration: none;
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #53b43b;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  color: #52b33c;
+  transition: .2s ease-in-out;
+}
+
+.green-shine-button:before {
+  content: "";
+  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+
+.green-shine-button:hover {
+  background: #51b23d;
+  color: #fff;
+}
+
+.green-shine-button:hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
 }
 </style>
 
