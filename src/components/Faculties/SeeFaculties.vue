@@ -52,6 +52,7 @@
 
 <script>
 import axios from "axios";
+import {CheckExist} from "@/components/Validation/CheckExist";
 
 
 export default {
@@ -60,24 +61,23 @@ export default {
     data: [],
     id: 0,
   }),
+
   mounted() {
     this.initialise();
   },
-
 
   methods: {
 
     async initialise() {
       //Вичислить id
       let res = new URL(location.href).searchParams.get('id');
-      if (res === '') {
+      if (res === '' || !(await CheckExist.checkFacultyById(res))) {
         return;
       }
+
       //Підгрузка даних
       this.id = res
-      if (this.id !== 0) {
-        this.data = (await (axios.get('http://localhost:8080/faculties/view/' + this.id))).data;
-      }
+      this.data = (await (axios.get('http://localhost:8080/faculties/view/' + this.id))).data;
     },
 
 

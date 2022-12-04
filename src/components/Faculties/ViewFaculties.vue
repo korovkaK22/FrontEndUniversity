@@ -68,6 +68,7 @@ export default {
 .Vue {
   margin: 1vw auto;
   width: 100%;
+  font-size: 2vw;
 }
 
 
