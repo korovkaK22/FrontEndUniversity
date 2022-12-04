@@ -49,11 +49,11 @@
   </div>
   </div>
 
-  <div class=apperMistake>
-    {{mistake}}
+
+  <!--  Помилка при видаленні-->
+  <div class=appearMistake>
+    {{appearMistakes}}
   </div>
-
-
   <div class=mistake>
     {{mistake}}
   </div>
@@ -101,7 +101,7 @@ export default {
       window.location.href = '/viewFaculties'}
       else{
         //Помилка пішла
-        this.appearMistakes="Виникла помилка при видаленні."
+        this.appearMistakes="Виникла помилка при видаленні..."
       }
     }
 
@@ -161,6 +161,18 @@ export default {
   font-weight: lighter;
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
+  font-size:1vw;
+  margin:1vw auto;
+  width: 80%;
+}
+
+.appearMistake{
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font:1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size:2vw;
 }
 
 

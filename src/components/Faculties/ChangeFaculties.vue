@@ -85,7 +85,7 @@ export default {
         name: this.newName, shortName: this.newShortName
       })
 
-      window.location.href = '/viewFaculties';
+      window.location.href = '/seeFaculties/?id='+this.id;
     },
   }
 }
@@ -105,7 +105,7 @@ export default {
 .titleText {
   margin: 0 auto;
   text-align: center;
-  font-size: 3vw;
+  font-size: 2.5vw;
   padding-bottom: 4vw;
 }
 
