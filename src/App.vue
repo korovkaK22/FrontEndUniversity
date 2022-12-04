@@ -33,6 +33,7 @@ export default {
 <style>
 @import './components/CSS/Home.css';
 
+
 main{
   margin: 2vw auto;
   font-size: 4vw;

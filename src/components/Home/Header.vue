@@ -26,7 +26,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewFaculties">Всі факультети</router-link> <br>
-            <router-link to="/changeFaculties">Редагувати факультети</router-link> <br>
+            <router-link to="/createFaculties">Створити факультет</router-link> <br>
           </div>
         </div>
       </div>
