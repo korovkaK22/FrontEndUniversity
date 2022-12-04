@@ -67,11 +67,11 @@
 
       <div class="item">
         <div class="pages">
-          Вчителі
+          Викладачі
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
-            <router-link to="/viewTeachers">Всі вчителі</router-link> <br>
-            <router-link to="/changeTeachers">Редагувати вчителів</router-link> <br>
+            <router-link to="/viewTeachers">Всі Викладачі</router-link> <br>
+            <router-link to="/changeTeachers">Редагувати Викладачів</router-link> <br>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
 
       <div class="item">
         <div class="pages">
-          Розклад студентів
+          Розклад
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewSchedules">Всі розклади</router-link> <br>

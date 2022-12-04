@@ -7,8 +7,8 @@
     <div class=titleText>Факультет <span class=italic><br>" {{ data.name }} "  </span></div>
 
     <div class=description>
-      Назва:  {{ data.name }}; <br>
-      Абревіатура:  {{ data.short_name }};  <br>
+      Назва: <span class=italic> {{ data.name }}; </span><br>
+      Абревіатура:  <span class=italic> {{ data.short_name }};  </span> <br>
     </div>
 
     <!--Кнопочки-->
@@ -29,7 +29,9 @@
         Факультет не знайдено.<br> Перевірте правильність набору
     </div>
   </span>
+
   </div>
+
 
 <!--    Видалили Факультет-->
 
@@ -43,7 +45,17 @@
 <!--      </router-link>-->
     <div>
       <div>
+
   </div>
+  </div>
+
+  <div class=apperMistake>
+    {{mistake}}
+  </div>
+
+
+  <div class=mistake>
+    {{mistake}}
   </div>
 
 
@@ -60,6 +72,8 @@ export default {
   data: () => ({
     data: [],
     id: 0,
+    mistake:'',
+    appearMistakes:'',
   }),
 
   mounted() {
@@ -82,8 +96,13 @@ export default {
 
 
     async deleteFaculties(){
-      await axios.delete('http://localhost:8080/faculties/delete?id=' + this.id);
-      window.location.href = '/viewFaculties'
+      this.mistake= (await (axios.delete('http://localhost:8080/faculties/delete?id=' + this.id))).data;
+      if (this.mistake===''){
+      window.location.href = '/viewFaculties'}
+      else{
+        //Помилка пішла
+        this.appearMistakes="Виникла помилка при видаленні."
+      }
     }
 
 
@@ -136,6 +155,13 @@ export default {
 
 }
 
+.mistake{
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font:1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+}
 
 
 
