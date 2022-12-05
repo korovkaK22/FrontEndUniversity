@@ -31,6 +31,8 @@ import ChangeSchedules from "@/components/Schedules/ChangeSchedules";
 
 import ViewTeachers from "@/components/Teachers/ViewTeachers";
 import ChangeTeachers from "@/components/Teachers/ChangeTeachers";
+import SeeTeachers from "@/components/Teachers/SeeTeachers";
+import CreateTeachers from "@/components/Teachers/CreateTeachers";
 
 import ViewStudents from "@/components/Students/ViewStudents";
 import ChangeStudents from "@/components/Students/ChangeStudents";
@@ -73,6 +75,8 @@ const routes = [
 
     {path: '/viewTeachers', component: ViewTeachers},
     {path: '/changeTeachers', component: ChangeTeachers},
+    {path: '/createTeachers', component: CreateTeachers},
+    {path: '/seeTeachers', component: SeeTeachers},
 
 ]
 

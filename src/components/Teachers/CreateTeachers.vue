@@ -1,10 +1,10 @@
 <template>
   <div class="Vue">
-    <span v-if="id!==0">
-      <div class=titleText>Редагувати Факультет</div>
+    <div class=titleText>Додати Викладача</div>
 
     <form class="registrationForm">
-        <div class="group">
+
+      <div class="group">
         <input type="text" v-model="newName" required>
         <span class="bar"></span>
         <label>Ім'я</label>
@@ -29,67 +29,39 @@
       </div>
 
       <div class=itemButton>
-        <a @click=" editObject();" class="green-shine-button">Створити</a>
+        <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
 
       <div class=mistake>
         {{mistake}}
       </div>
     </form>
-    </span>
 
-    <!--    По айдішніку не найшли-->
-    <span v-else>
-    <div class="dontFound">
-        Факультет не знайдено.<br> Перевірте правильність набору
-    </div>
-  </span>
+
+
+
   </div>
-
-
 </template>
 
 <script>
 import axios from "axios";
 import {InputValidation} from "@/components/Validation/InputValidation";
-import {CheckExist} from "@/components/Validation/CheckExist";
 
 export default {
-  name: "ChangeTeachers",
+  name: "CreateTeachers", //===========
   data: () => ({
     BType:'Teachers', //====================
     type:'teachers', //====================
-    id: 0,
     newName:'',
     newSurname:'',
-    newPhone:'',
     newEmail:'',
+    newPhone:'',
     mistake:'',
   }),
 
-  mounted() {
-    this.initialise();
-  },
 
   methods: {
-
-    async initialise() {
-      //Вичислить id
-      let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkTeachersById(res))) {   //====================
-        return;
-      }
-
-      //Підгрузка даних
-      this.id = res
-      let data = (await (axios.get('http://localhost:8080/'+this.type+'/view/' + this.id))).data;
-      this.newName=data.name;
-      this.newSurname=data.surname;
-      this.newPhone=data.phone;
-      this.newEmail=data.email;
-    },
-
-    async editObject() {
+    async createNew() { //===================
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введене ім\'я'
         return;
@@ -107,14 +79,14 @@ export default {
         return;
       }
 
+
       this.mistake='';
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id: this.id,
-        name: this.newName, surname: this.newSurname, email:this.newEmail, phone:this.newPhone  //====================
+      await axios.post('http://localhost:8080/'+this.type+'/create',{
+        name: this.newName, surname: this.newSurname, email:this.newEmail, phone:this.newPhone
       })
 
-      window.location.href = '/see'+this.BType+'/?id='+this.id;
+      window.location.href = '/view'+this.BType;
     },
   }
 }
@@ -134,8 +106,8 @@ export default {
 .titleText {
   margin: 0 auto;
   text-align: center;
-  font-size: 2.5vw;
-  padding-bottom: 4vw;
+  font-size: 3vw;
+  padding-bottom: 2vw;
 }
 
 a {
@@ -155,8 +127,16 @@ a {
   font-weight: lighter;
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
+  width: 120%;
 }
 
+.itemButton{
+  margin-left: -3vw;
+}
+
+.itemButton{
+  margin-left:1vw
+}
 
 
 /*=========Інпути красиві==========*/

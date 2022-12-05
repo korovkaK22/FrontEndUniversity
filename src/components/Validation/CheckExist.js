@@ -32,6 +32,11 @@ export class CheckExist {
         return result!=='';
     }
 
+    static async checkTeachersById(id){
+        let result=  (await (axios.get('http://localhost:8080/teachers/view/'+id))).data;
+        return result!=='';
+    }
+
 
 
 
