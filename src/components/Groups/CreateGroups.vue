@@ -1,24 +1,25 @@
 <template>
   <div class="Vue">
-    <div class=titleText>Редагувати Відділ</div>
+    <div class=titleText>Створити Групу</div>
 
     <form class="registrationForm">
 
       <div class="group">
         <input type="text" v-model="newName" required>
         <span class="bar"></span>
-        <label>Назва Відділу</label>
+        <label>Назва групи</label>
       </div>
 
       <div class="group">
-        <input type="text" v-model="newShortName" required>
+        <input type="text" v-model="newCourse" required>
         <span class="bar"></span>
-        <label>Абревіатура</label>
+        <label>Курс</label>
       </div>
 
 
       <div class="selectBox">
         <select v-model="newOption" >
+          <option value="" disabled selected >Відділ</option>
           <option v-for="o in options" :key="o.id"
                   v-bind:value=o.id>{{o.name}}</option>
         </select>
@@ -27,7 +28,7 @@
 
 
       <div class=itemButton>
-        <a @click=" createNew();" class="green-shine-button">Зберегти</a>
+        <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
 
       <div class=mistake>
@@ -49,16 +50,16 @@ import {CheckExist} from "@/components/Validation/CheckExist";
 
 export default {
 
-  name: "ChangeDepartments", //===========
+  name: "CreateGroups", //===========
   data: () => ({
-    BType:'Departments', //====================
-    type:'departments', //====================
+    BType:'Groups', //====================
+    type:'groups', //====================
     newName:'',
-    newShortName:'',
+    newCourse:'',
     options:[],
     newOption:'',
     mistake:'',
-    id: 0,
+
   }),
 
   mounted() {
@@ -69,19 +70,7 @@ export default {
 
 
     async initialise() {
-      let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkDepartmentById(res))) {  //===============
-        return;
-      }
-
-
-      //Підгрузка даних
-      this.id = res
-      let data = (await (axios.get('http://localhost:8080/'+this.type+'/view/' + this.id))).data;
-      this.options=(await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
-      this.newName=data.name;
-      this.newShortName=data.short_name;
-      this.newOption=data.faculty_id;
+      this.options=(await (axios.get('http://localhost:8080/departments/viewALL'))).data;
     },
 
     async createNew() {                                                     //===================
@@ -90,25 +79,24 @@ export default {
         this.mistake='Невірно введене ім\'я'
         return;
       }
-      if (!InputValidation.checkShortName(this.newShortName)){
-        this.mistake='Невірно введена Абревіатура'
+      if (!InputValidation.checkCourse(this.newCourse)){
+        this.mistake='Невірно введений курс'
         return;
       }
-      if (this.newOption==='' || !(await(CheckExist.checkFacultyById(this.newOption)))){
-        this.mistake='Такого факультету не існує!'
+      if (this.newOption==='' || !(await(CheckExist.checkDepartmentById(this.newOption)))){ //===============
+        this.mistake='Такого відділу не існує!'
         return;
       }
 
 
       this.mistake='';
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id:this.id,
-        name: this.newName, shortName: this.newShortName,
-        facultyId:this.newOption
+      await axios.post('http://localhost:8080/'+this.type+'/create',{
+        name: this.newName, course: this.newCourse,
+        departmentId:this.newOption
       })
 
-      window.location.href = '/view'+this.BType+'/?id='+this.id;
+      window.location.href = '/view'+this.BType;
     },
   }
 }
@@ -129,7 +117,7 @@ export default {
   margin: 0 auto;
   text-align: center;
   font-size: 3vw;
-  padding-bottom: 3vw;
+  padding-bottom: 2vw;
 }
 
 a {

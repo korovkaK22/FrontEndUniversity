@@ -11,6 +11,8 @@ import ChangeFaculties from "@/components/Faculties/ChangeFaculties";
 import CreateFaculties from "@/components/Faculties/CreateFaculties";
 import SeeFaculties from "@/components/Faculties/SeeFaculties";
 
+import CreateGroups from "@/components/Groups/CreateGroups";
+import SeeGroups from "@/components/Groups/SeeGroups";
 import ViewGroups from "@/components/Groups/ViewGroups";
 import ChangeGroups from "@/components/Groups/ChangeGroups";
 
@@ -48,6 +50,8 @@ const routes = [
 
     {path: '/viewGroups', component: ViewGroups},
     {path: '/changeGroups', component: ChangeGroups},
+    {path: '/createGroups', component: CreateGroups},
+    {path: '/seeGroups', component: SeeGroups},
 
     {path: '/viewDisciplines', component: ViewDisciplines},
     {path: '/changeDisciplines', component: ChangeDisciplines},

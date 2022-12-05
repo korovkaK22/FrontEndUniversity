@@ -49,7 +49,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewGroups">Всі групи</router-link> <br>
-            <router-link to="/changeGroups">Редагувати групи</router-link> <br>
+            <router-link to="/createGroups">Створити групу</router-link> <br>
           </div>
         </div>
       </div>

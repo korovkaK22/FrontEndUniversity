@@ -14,6 +14,10 @@ export class InputValidation {
         return !(name.length<3 || name.length>=32)
     }
 
+    static checkCourse(name){
+        return !(name<1 || name>4)
+    }
+
 
 
 

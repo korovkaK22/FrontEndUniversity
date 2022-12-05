@@ -22,6 +22,11 @@ export class CheckExist {
         return result!=='';
     }
 
+    static async checkGroupsById(id){
+        let result=  (await (axios.get('http://localhost:8080/groups/view/'+id))).data;
+        return result!=='';
+    }
+
 
 
 
