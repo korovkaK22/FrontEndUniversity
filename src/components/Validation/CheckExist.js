@@ -37,6 +37,16 @@ export class CheckExist {
         return result!=='';
     }
 
+    static async checkStudentsById(id){
+        let result=  (await (axios.get('http://localhost:8080/students/view/'+id))).data;
+        return result!=='';
+    }
+
+    static async checkSchedulesById(id){
+        let result=  (await (axios.get('http://localhost:8080/students/view/'+id))).data;
+        return result!=='';
+    }
+
 
 
 

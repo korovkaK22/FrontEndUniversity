@@ -36,6 +36,8 @@ import CreateTeachers from "@/components/Teachers/CreateTeachers";
 
 import ViewStudents from "@/components/Students/ViewStudents";
 import ChangeStudents from "@/components/Students/ChangeStudents";
+import SeeStudents from "@/components/Students/SeeStudents";
+import CreateStudents from "@/components/Students/CreateStudents";
 
 
 const routes = [
@@ -72,6 +74,8 @@ const routes = [
 
     {path: '/viewStudents', component: ViewStudents},
     {path: '/changeStudents', component: ChangeStudents},
+    {path: '/seeStudents', component: SeeStudents},
+    {path: '/createStudents', component: CreateStudents},
 
     {path: '/viewTeachers', component: ViewTeachers},
     {path: '/changeTeachers', component: ChangeTeachers},

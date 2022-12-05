@@ -1,7 +1,7 @@
 <template>
   <div class="Vue">
     <span v-if="id!==0">
-      <div class=titleText>Редагувати Факультет</div>
+      <div class=titleText>Редагувати Викладача</div>
 
     <form class="registrationForm">
         <div class="group">
@@ -41,7 +41,7 @@
     <!--    По айдішніку не найшли-->
     <span v-else>
     <div class="dontFound">
-        Факультет не знайдено.<br> Перевірте правильність набору
+        Викладача не знайдено.<br> Перевірте правильність набору
     </div>
   </span>
   </div>

@@ -1,40 +1,48 @@
 <template>
   <div class="Vue">
-    <span v-if="id!==0">
-      <div class=titleText>Редагувати Факультет</div>
+    <div class=titleText>Додати Студента</div>
 
     <form class="registrationForm">
+
       <div class="group">
         <input type="text" v-model="newName" required>
         <span class="bar"></span>
-        <label>Назва Факультету</label>
+        <label>Ім'я</label>
       </div>
 
       <div class="group">
-        <input type="text" v-model="newShortName" required>
+        <input type="text" v-model="newEmail" required>
         <span class="bar"></span>
-        <label>Абревіатура</label>
+        <label>Почта</label>
+      </div>
+
+      <div class="group">
+        <input type="text" v-model="newPhone" required>
+        <span class="bar"></span>
+        <label>Номер телефону</label>
+      </div>
+
+      <div class="selectBox">
+        <select v-model="newOption" >
+          <option value="" disabled selected >Група</option>
+          <option v-for="o in options" :key="o.id"
+                  v-bind:value=o.id>{{o.name}}</option>
+        </select>
       </div>
 
       <div class=itemButton>
-        <a @click=" editObject();" class="green-shine-button">Зберегти</a>
+        <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
 
       <div class=mistake>
         {{mistake}}
       </div>
     </form>
-    </span>
 
-    <!--    По айдішніку не найшли-->
-    <span v-else>
-    <div class="dontFound">
-        Факультет не знайдено.<br> Перевірте правильність набору
-    </div>
-  </span>
+
+
+
   </div>
-
-
 </template>
 
 <script>
@@ -43,13 +51,15 @@ import {InputValidation} from "@/components/Validation/InputValidation";
 import {CheckExist} from "@/components/Validation/CheckExist";
 
 export default {
-  name: "ChangeFaculties",
+  name: "CreateStudents", //===========
   data: () => ({
-    BType:'Faculties', //====================
-    type:'faculties', //====================
-    id: 0,
+    BType:'Students', //====================
+    type:'students', //====================
     newName:'',
-    newShortName:'',
+    newEmail:'',
+    newPhone:'',
+    newOption:'',
+    options:[],
     mistake:'',
   }),
 
@@ -58,39 +68,35 @@ export default {
   },
 
   methods: {
-
     async initialise() {
-      //Вичислить id
-      let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkFacultyById(res))) {   //====================
-        return;
-      }
-
-      //Підгрузка даних
-      this.id = res
-      let data = (await (axios.get('http://localhost:8080/'+this.type+'/view/' + this.id))).data;
-      this.newName=data.name;
-      this.newShortName=data.short_name;
+      this.options=(await (axios.get('http://localhost:8080/groups/viewALL'))).data;
     },
 
-    async editObject() {
+    async createNew() { //===================
       if (!InputValidation.checkName(this.newName)){
-        this.mistake='Невірно введена назва'
+        this.mistake='Невірно введене ім\'я'
         return;
       }
-      if (!InputValidation.checkShortName(this.newShortName)){
-        this.mistake='Невірно введена Абревіатура'
+      if (!InputValidation.checkEmail(this.newEmail)){
+        this.mistake='Невірно введена почта'
+        return;
+      }
+      if (!InputValidation.checkPhone(this.newPhone)){
+        this.mistake='Невірно введений номер телефону'
+        return;
+      }
+      if (this.newOption==='' || !(await(CheckExist.checkGroupsById(this.newOption)))){ //===============
+        this.mistake='Такої групи не існує!'
         return;
       }
 
       this.mistake='';
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id: this.id,
-        name: this.newName, shortName: this.newShortName  //====================
+      await axios.post('http://localhost:8080/'+this.type+'/create',{
+        name: this.newName, email:this.newEmail, phone:this.newPhone, groupId:this.newOption
       })
 
-      window.location.href = '/see'+this.BType+'/?id='+this.id;
+      window.location.href = '/view'+this.BType;
     },
   }
 }
@@ -110,8 +116,8 @@ export default {
 .titleText {
   margin: 0 auto;
   text-align: center;
-  font-size: 2.5vw;
-  padding-bottom: 4vw;
+  font-size: 3vw;
+  padding-bottom: 2vw;
 }
 
 a {
@@ -131,10 +137,15 @@ a {
   font-weight: lighter;
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
+  width: 120%;
 }
 
 .itemButton{
-  margin-left: -1vw;
+  margin-left: -3vw;
+}
+
+.itemButton{
+  margin-left:1vw
 }
 
 
@@ -289,6 +300,50 @@ input:focus ~ .bar:after {
 .green-shine-button:hover:before {
   left: 150px;
   transition: .5s ease-in-out;
+}
+
+
+/*================Селект бокс================*/
+
+.selectBox{
+
+  font-size: 18px;
+  color: #1c87c9;
+  border-radius: 5px;
+  box-shadow: 4px 4px #ccc;
+  margin: 0 auto;
+  background: none;
+  border:none;
+
+}
+
+.selectBox select{
+  padding-left: 1vw;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #999;
+  width: 100%;
+  height: 4vw;
+  background: none;
+  font-size: 120%;
+
+
+  border-top: rgba(104, 12, 154, 0.09);
+  border-left: rgba(104, 12, 154, 0.09);
+  border-right: rgba(104, 12, 154, 0.09);
+  border-bottom: #e8e8e9 ;
+  border-width: 1vw;
+}
+
+.selectBox option{
+  background: none;
+
+  border-top: rgba(104, 12, 154, 0.09);
+  border-left: rgba(104, 12, 154, 0.09);
+  border-right: rgba(104, 12, 154, 0.09);
+  border-bottom: #e8e8e9 ;
+  border-width: 1vw;
 }
 </style>
 

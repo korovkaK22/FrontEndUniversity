@@ -81,6 +81,8 @@ a {
   text-decoration: none;
 }
 
+
+
 /*=======Табличка красива======*/
 
 .styled-table {
