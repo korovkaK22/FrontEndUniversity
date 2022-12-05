@@ -32,10 +32,15 @@
         <a @click=" createNew();" class="green-shine-button">Зберегти</a>
       </div>
 
-      <div class=mistake>
-        {{mistake}}
-      </div>
     </form>
+
+      <!--  Помилка при Редагуванні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
 
     </span>
     <!--    По айдішніку не найшли-->
@@ -66,6 +71,7 @@ export default {
     newOption:'',
     mistake:'',
     id: 0,
+    appearMistakes: '',
   }),
 
   mounted() {
@@ -92,7 +98,7 @@ export default {
     },
 
     async createNew() {                                                     //===================
-
+      this.appearMistakes = ''
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введена назва'
         return;
@@ -101,21 +107,44 @@ export default {
         this.mistake='Невірно введений курс'
         return;
       }
-      if (this.newOption==='' || !(await(CheckExist.checkDepartmentById(this.newOption)))){
+      if (this.newOption===''){
         this.mistake='Такого відділу не існує!'
         return;
       }
 
+      try{
+        if (!(await(CheckExist.checkDepartmentById(this.newOption)))){
+          this.mistake='Такого відділу не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
+        return;
+      }
 
-      this.mistake='';
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id:this.id,
-        name: this.newName, course: this.newCourse,
-        departmentId:this.newOption
-      })
 
-      window.location.href = '/see'+this.BType+'/?id='+this.id;
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
+
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/'+this.type+'/edit',{
+          id: this.id,
+          name: this.newName, course: this.newCourse,
+          departmentId:this.newOption
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -145,9 +174,13 @@ a {
 }
 
 .registrationForm{
-  width: 60%;
+  width: 20vw;
   margin: 0 auto;
 
+}
+
+.itemButton{
+  margin-left:4vw;
 }
 
 .mistake{
@@ -158,6 +191,14 @@ a {
   color: #9d0000;
 }
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
 
 
 /*=========Інпути красиві==========*/

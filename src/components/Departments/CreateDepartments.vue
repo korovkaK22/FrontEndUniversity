@@ -359,7 +359,7 @@ input:focus ~ .bar:after {
   appearance: none;
   color: #999;
   width: 100%;
-  height: 4vw;
+  height: 2.5vw;
   background: none;
   font-size: 120%;
 

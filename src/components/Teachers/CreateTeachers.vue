@@ -68,6 +68,7 @@ export default {
 
   methods: {
     async createNew() { //===================
+      this.appearMistakes = ''
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введене ім\'я'
         return;

@@ -14,11 +14,16 @@
       <div class=itemButton>
         <a @click=" editObject();" class="green-shine-button">Зберегти</a>
       </div>
-
-      <div class=mistake>
-        {{mistake}}
-      </div>
     </form>
+
+      <!--  Помилка при Редагуванні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
+
     </span>
 
     <!--    Факультет не найшли-->
@@ -45,6 +50,7 @@ export default {
     id: 0,
     newName:'',
     mistake:'',
+    appearMistakes: '',
   }),
 
   mounted() {
@@ -67,20 +73,33 @@ export default {
     },
 
     async editObject() {
+      this.appearMistakes = ''
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введена назва'
         return;
       }
 
 
-      this.mistake='';
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id: this.id,
-        name: this.newName //====================
-      })
-
-      window.location.href = '/see'+this.BType+'/?id='+this.id;
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/'+this.type+'/edit',{
+          id: this.id,
+          name: this.newName //====================
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -123,6 +142,14 @@ a {
   color: #9d0000;
 }
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
 
 
 /*=========Інпути красиві==========*/

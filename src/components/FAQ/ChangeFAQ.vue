@@ -10,8 +10,8 @@
         <span class="bar"></span>
         <label>Питання</label>
       </div>
-    </form>
-      <textarea v-model="newShortName" name="textComment"
+
+      <textarea v-model="newShortName" name="textComment" class="textComment"
                 placeholder="Відповідь"
                 style="padding-bottom:250px ;
                 background: rgba(134,137,180,0.16);
@@ -25,9 +25,17 @@
         <a @click=" editObject();" class="green-shine-button">Зберегти</a>
       </div>
     </div>
-      <div class=mistake>
-      {{mistake}}
-      </div>
+
+    </form>
+
+      <!--  Помилка при Редагуванні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
+
 
     </span>
     <!--    По айдішніку не найшли-->
@@ -51,6 +59,7 @@ export default {
     newName:'',
     newShortName:'',
     mistake:'',
+    appearMistakes: '',
      }),
 
   mounted() {
@@ -74,6 +83,7 @@ export default {
     },
 
     async editObject() {
+      this.appearMistakes = ''
       if (!InputValidation.checkQnA(this.newName)){
         this.mistake='Невірно поставлене питання'
         return;
@@ -83,14 +93,28 @@ export default {
         return;
       }
 
-      this.mistake='';
 
-      await axios.post('http://localhost:8080/faq/edit',{
-        id: this.id,
-        question: this.newName, answer: this.newShortName
-      })
 
-      window.location.href = '/seeFaq/?id='+this.id;
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
+
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/faq/edit',{
+          id: this.id,
+          question: this.newName, answer: this.newShortName
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -134,10 +158,22 @@ a {
 }
 
 .greenButton{
-  margin:0 auto;
+  margin-left:-5vw;
 }
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
 
+}
+
+.textComment{
+  margin-left: -5vw;
+}
 
 /*=========Інпути красиві==========*/
 /* form starting stylings */

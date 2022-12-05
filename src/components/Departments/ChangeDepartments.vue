@@ -33,10 +33,15 @@
         <a @click=" createNew();" class="green-shine-button">Зберегти</a>
       </div>
 
-      <div class=mistake>
-        {{mistake}}
-      </div>
-    </form>
+      </form>
+
+      <!--  Помилка при Редагуванні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
 
   </span>
     <!--    По айдішніку не найшли-->
@@ -67,6 +72,7 @@ export default {
     newOption:'',
     mistake:'',
     id: 0,
+    appearMistakes: '',
   }),
 
   mounted() {
@@ -93,7 +99,7 @@ export default {
     },
 
     async createNew() {                                                     //===================
-
+      this.appearMistakes = ''
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введена назва'
         return;
@@ -102,8 +108,18 @@ export default {
         this.mistake='Невірно введена Абревіатура'
         return;
       }
-      if (this.newOption==='' || !(await(CheckExist.checkFacultyById(this.newOption)))){
+      if (this.newOption==='' ){
         this.mistake='Такого факультету не існує!'
+        return;
+      }
+
+      try{
+        if (!(await(CheckExist.checkFacultyById(this.newOption)))){
+          this.mistake='Такого факультету не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
         return;
       }
 
@@ -146,9 +162,13 @@ a {
 }
 
 .registrationForm{
-  width: 60%;
+  width: 20vw;
   margin: 0 auto;
 
+}
+
+.itemButton{
+  margin-left:4vw;
 }
 
 .mistake{
@@ -159,6 +179,14 @@ a {
   color: #9d0000;
 }
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
 
 
 /*=========Інпути красиві==========*/

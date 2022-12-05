@@ -19,11 +19,16 @@
       <div class=itemButton>
         <a @click=" editObject();" class="green-shine-button">Зберегти</a>
       </div>
-
-      <div class=mistake>
-        {{mistake}}
-      </div>
     </form>
+
+      <!--  Помилка при Редагуванні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
+
     </span>
 
     <!--    По айдішніку не найшли-->
@@ -51,6 +56,7 @@ export default {
     newName:'',
     newShortName:'',
     mistake:'',
+    appearMistakes: '',
   }),
 
   mounted() {
@@ -74,6 +80,7 @@ export default {
     },
 
     async editObject() {
+      this.appearMistakes = ''
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введена назва'
         return;
@@ -83,14 +90,28 @@ export default {
         return;
       }
 
-      this.mistake='';
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id: this.id,
-        name: this.newName, shortName: this.newShortName  //====================
-      })
 
-      window.location.href = '/see'+this.BType+'/?id='+this.id;
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
+
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/'+this.type+'/edit',{
+          id: this.id,
+          name: this.newName, shortName: this.newShortName  //====================
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -137,6 +158,14 @@ a {
   margin-left: -1vw;
 }
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
 
 /*=========Інпути красиві==========*/
 /* form starting stylings */

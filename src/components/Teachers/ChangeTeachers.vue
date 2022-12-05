@@ -32,10 +32,16 @@
         <a @click=" editObject();" class="green-shine-button">Створити</a>
       </div>
 
-      <div class=mistake>
-        {{mistake}}
-      </div>
-    </form>
+     </form>
+
+      <!--  Помилка при Редагуванні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
+
     </span>
 
     <!--    По айдішніку не найшли-->
@@ -65,6 +71,7 @@ export default {
     newPhone:'',
     newEmail:'',
     mistake:'',
+    appearMistakes: '',
   }),
 
   mounted() {
@@ -90,6 +97,7 @@ export default {
     },
 
     async editObject() {
+      this.appearMistakes = ''
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введене ім\'я'
         return;
@@ -107,14 +115,28 @@ export default {
         return;
       }
 
-      this.mistake='';
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id: this.id,
-        name: this.newName, surname: this.newSurname, email:this.newEmail, phone:this.newPhone  //====================
-      })
 
-      window.location.href = '/see'+this.BType+'/?id='+this.id;
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
+
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/'+this.type+'/edit',{
+          id: this.id,
+          name: this.newName, surname: this.newSurname, email:this.newEmail, phone:this.newPhone
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -156,8 +178,20 @@ a {
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
 }
+.registrationForm{
+  width: 20vw;
+  margin: 0 auto;
 
+}
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
 
 /*=========Інпути красиві==========*/
 /* form starting stylings */

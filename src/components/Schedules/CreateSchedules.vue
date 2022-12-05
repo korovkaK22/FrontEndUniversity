@@ -99,7 +99,7 @@ export default {
     },
 
     async createNew() {                                                     //===================
-
+      this.appearMistakes = ''
       if (!InputValidation.checkTime(this.newTime)){
         this.mistake='Невірно введений час'
         return;
@@ -168,7 +168,7 @@ export default {
       let result = ''
       try {
         result = (await axios.post('http://localhost:8080/' + this.type + '/create', {
-          groupId:this.newGroups, disciplineId:this.newDisciplines, teacherId:this.newTeachers
+          groupId:this.newGroups, disciplineId:this.newDisciplines, teacherId:this.newTeachers, time:this.newTime, classroom:this.newClassroom,
         })).data;
       } catch (error) {
         result = error;
@@ -217,7 +217,8 @@ a {
 }
 
 .itemButton{
-  margin-left: 1.5vw
+  margin-left: 1.5vw;
+  margin-top:-0.5vw;
 }
 
 .appearMistake {
@@ -387,14 +388,14 @@ input:focus ~ .bar:after {
 /*================Селект бокс================*/
 
 .selectBox{
-
   font-size: 18px;
   color: #1c87c9;
   border-radius: 5px;
   box-shadow: 4px 4px #ccc;
-  margin: 0 auto;
+  margin: 1vw auto;
   background: none;
   border:none;
+  height: 2.5vw;
 
 }
 
@@ -405,7 +406,7 @@ input:focus ~ .bar:after {
   appearance: none;
   color: #999;
   width: 100%;
-  height: 4vw;
+  height: 2.5vw;
   background: none;
   font-size: 120%;
 

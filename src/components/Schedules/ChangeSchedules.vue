@@ -47,11 +47,15 @@
       <div class=itemButton>
         <a @click=" editItem();" class="green-shine-button">Зберегти</a>
       </div>
+      </form>
 
-      <div class=mistake>
-        {{mistake}}
-      </div>
-    </form>
+      <!--  Помилка при Редагуванні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
 
   </span>
     <!--    По айдішніку не найшли-->
@@ -87,6 +91,7 @@ export default {
     newDisciplines:'',
 
     mistake:'',
+    appearMistakes: '',
     id: 0,
   }),
 
@@ -99,7 +104,7 @@ export default {
 
     async initialise() {
       let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkDepartmentById(res))) {  //===============
+      if (res === '' || !(await CheckExist.checkSchedulesById(res))) {  //===============
         return;
       }
 
@@ -118,7 +123,7 @@ export default {
     },
 
     async editItem() {                                                     //===================
-
+      this.appearMistakes = ''
       if (!InputValidation.checkTime(this.newTime)){
         this.mistake='Невірно введений час'
         return;
@@ -127,29 +132,70 @@ export default {
         this.mistake='Невірно введена аудиторія'
         return;
       }
-      if (this.newTeachers==='' || !(await(CheckExist.checkTeachersById(this.newTeachers)))){ //===============
+      if (this.newTeachers==='' ){ //===============
         this.mistake='Такого викладача не існує!'
         return;
       }
-      if (this.newDisciplines==='' || !(await(CheckExist.checkDisciplinesById(this.newDisciplines)))){ //===============
+      if (this.newDisciplines==='' ){ //===============
         this.mistake='Такої дисципліни не існує!'
         return;
       }
-      if (this.newGroups==='' || !(await(CheckExist.checkGroupsById(this.newGroups)))){ //===============
+      if (this.newGroups==='' ){ //===============
         this.mistake='Такої групи не існує!'
+        return;
+      }
+      try{
+        if ( !(await(CheckExist.checkTeachersById(this.newTeachers)))){
+          this.mistake='Такого викладача не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
+        return;
+      }
+
+      try{
+        if ( !(await(CheckExist.checkDisciplinesById(this.newDisciplines)))){
+          this.mistake='Такої дисципліни не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
+        return;
+      }
+
+      try{
+        if (!(await(CheckExist.checkGroupsById(this.newGroups))) ){
+          this.mistake='Такої групи не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
         return;
       }
 
 
-      this.mistake='';
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id:this.id,
-        time: this.newTime, classroom: this.newClassroom,
-        groupId:this.newGroups, disciplineId:this.newDisciplines, teacherId:this.newTeachers
-      })
-
-      window.location.href = '/see'+this.BType+'/?id='+this.id;
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/'+this.type+'/edit',{
+          id:this.id,
+          time: this.newTime, classroom: this.newClassroom,
+          groupId:this.newGroups, disciplineId:this.newDisciplines, teacherId:this.newTeachers
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -178,11 +224,6 @@ a {
   text-decoration: none;
 }
 
-.registrationForm{
-  width: 60%;
-  margin: 0 auto;
-
-}
 
 .mistake{
   text-align: center;
@@ -192,6 +233,24 @@ a {
   color: #9d0000;
 }
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
+
+.registrationForm{
+  width: 15vw;
+  margin: 0 auto;
+
+}
+
+.itemButton{
+  margin-left:2vw;
+}
 
 
 /*=========Інпути красиві==========*/
@@ -360,7 +419,6 @@ input:focus ~ .bar:after {
   background: none;
   border:none;
   margin-top:2vw;
-  margin-left: -2vw;
 
 }
 
