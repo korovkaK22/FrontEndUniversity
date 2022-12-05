@@ -83,7 +83,7 @@ export default {
         this.mistake='Невірно введена Абревіатура'
         return;
       }
-      if (this.newOption==='' || !(await(CheckExist.checkFacultyById(this.newOption)))){
+      if (this.newOption==='' || !(await(CheckExist.checkFacultyById(this.newOption)))){ //===============
         this.mistake='Такого факультету не існує!'
         return;
       }

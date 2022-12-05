@@ -85,7 +85,7 @@ export default {
         name: this.newName, shortName: this.newShortName
       })
 
-      window.location.href = '/seeFaculties/?id='+this.id;
+      window.location.href = '/seeFaculties/?id='+this.id+'/?id='+this.id;
     },
   }
 }

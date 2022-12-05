@@ -82,7 +82,7 @@ export default {
         question: this.newName, answer: this.newShortName
       })
 
-      window.location.href = '/seeFaq/?id='+this.id;
+      window.location.href = '/seeFaq/?id='+this.id+'/?id='+this.id;
     },
   }
 }

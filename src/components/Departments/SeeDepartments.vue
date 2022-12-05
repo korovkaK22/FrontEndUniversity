@@ -4,7 +4,7 @@
 
     <div v-if="id!==0">
 
-      <div class=titleText>Департамент <span class=italic><br>" {{ data.name }} "  </span></div>
+      <div class=titleText>Відділ <span class=italic><br>" {{ data.name }} "  </span></div>
 
       <div class=description>
         Назва: <span class=italic> {{ data.name }}; </span><br>
