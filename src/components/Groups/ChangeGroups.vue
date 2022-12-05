@@ -20,6 +20,7 @@
 
       <div class="selectBox">
         <select v-model="newOption" >
+          <option value="" disabled selected >Відділ</option>
           <option v-for="o in options" :key="o.id"
                   v-bind:value=o.id>{{o.name}}</option>
         </select>

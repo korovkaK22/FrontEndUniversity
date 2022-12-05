@@ -1,70 +1,81 @@
 <template>
   <div class="Vue">
-    <span v-if="id!==0">
-      <div class=titleText>Редагувати Студента</div>
+    <div class=titleText>Додати Розклад</div>
 
     <form class="registrationForm">
-        <div class="group">
-        <input type="text" v-model="newName" required>
+
+      <div class="group">
+        <input type="text" v-model="newTime" required>
         <span class="bar"></span>
-        <label>Ім'я</label>
+        <label>Час</label>
       </div>
 
       <div class="group">
-        <input type="text" v-model="newEmail" required>
+        <input type="text" v-model="newClassroom" required>
         <span class="bar"></span>
-        <label>Почта</label>
-      </div>
-
-      <div class="group">
-        <input type="text" v-model="newPhone" required>
-        <span class="bar"></span>
-        <label>Номер телефону</label>
+        <label>Аудиторія</label>
       </div>
 
       <div class="selectBox">
-        <select v-model="newOption" >
+        <select v-model="newTeachers" >
+          <option value="" disabled selected >Викладач</option>
+          <option v-for="o in teachers" :key="o.id"
+                  v-bind:value=o.id>{{o.name}}</option>
+        </select>
+      </div>
+
+      <div class="selectBox">
+        <select v-model="newDisciplines" >
+          <option value="" disabled selected >Дисципліна</option>
+          <option v-for="o in disciplines" :key="o.id"
+                  v-bind:value=o.id>{{o.name}}</option>
+        </select>
+      </div>
+
+      <div class="selectBox">
+        <select v-model="newGroups" >
           <option value="" disabled selected >Група</option>
-          <option v-for="o in options" :key="o.id"
+          <option v-for="o in groups" :key="o.id"
                   v-bind:value=o.id>{{o.name}}</option>
         </select>
       </div>
 
       <div class=itemButton>
-        <a @click=" editObject();" class="green-shine-button">Зберегти</a>
+        <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
 
       <div class=mistake>
         {{mistake}}
       </div>
     </form>
-    </span>
 
-    <!--    По айдішніку не найшли-->
-    <span v-else>
-    <div class="dontFound">
-        Студента не знайдено.<br> Перевірте правильність набору
-    </div>
-  </span>
+
+
+
   </div>
-
 </template>
 
 <script>
 import axios from "axios";
+
 import {InputValidation} from "@/components/Validation/InputValidation";
 import {CheckExist} from "@/components/Validation/CheckExist";
 
 export default {
-  name: "CreateStudents", //===========
+
+  name: "CreateSchedules", //===========
   data: () => ({
-    BType:'Students', //====================
-    type:'students', //====================
-    newName:'',
-    newEmail:'',
-    newPhone:'',
-    newOption:'',
-    options:[],
+    BType:'Schedules', //====================
+    type:'schedules', //====================
+    newTime:'',
+    newClassroom:'',
+    groups:[],
+    newGroups:'',
+    teachers:[],
+    newTeachers:'',
+    disciplines:[],
+    newDisciplines:'',
+
     mistake:'',
   }),
 
@@ -73,46 +84,45 @@ export default {
   },
 
   methods: {
-    async initialise() {
-      //Вичислить id
-      let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkStudentsById(res))) {   //====================
-        return;
-      }
 
-      //Підгрузка даних
-      this.id = res
-      let data = (await (axios.get('http://localhost:8080/'+this.type+'/view/' + this.id))).data;
-      this.options=(await (axios.get('http://localhost:8080/groups/viewALL'))).data;
-      this.newName=data.name;
-      this.newOption=data.group_id;
-      this.newPhone=data.phone;
-      this.newEmail=data.email;
+
+    async initialise() {
+      this.groups=(await (axios.get('http://localhost:8080/groups/viewALL'))).data;
+      this.disciplines=(await (axios.get('http://localhost:8080/disciplines/viewALL'))).data;
+      this.teachers=(await (axios.get('http://localhost:8080/teachers/viewALL'))).data;
     },
 
-    async editObject() { //===================
-      if (!InputValidation.checkName(this.newName)){
-        this.mistake='Невірно введене ім\'я'
+    async createNew() {                                                     //===================
+
+      if (!InputValidation.checkTime(this.newTime)){
+        this.mistake='Невірно введений час'
         return;
       }
-      if (!InputValidation.checkEmail(this.newEmail)){
-        this.mistake='Невірно введена почта'
+      if (!InputValidation.checkClassroom(this.newClassroom)){
+        this.mistake='Невірно введена аудиторія'
         return;
       }
-      if (!InputValidation.checkPhone(this.newPhone)){
-        this.mistake='Невірно введений номер телефону'
+      if (this.newTeachers==='' || !(await(CheckExist.checkTeachersById(this.newTeachers)))){ //===============
+        this.mistake='Такого викладача не існує!'
         return;
       }
-      if (this.newOption==='' || !(await(CheckExist.checkGroupsById(this.newOption)))){ //===============
+      if (this.newDisciplines==='' || !(await(CheckExist.checkDisciplinesById(this.newDisciplines)))){ //===============
+        this.mistake='Такої дисципліни не існує!'
+        return;
+      }
+      if (this.newGroups==='' || !(await(CheckExist.checkGroupsById(this.newGroups)))){ //===============
         this.mistake='Такої групи не існує!'
         return;
       }
 
+
       this.mistake='';
 
-      await axios.post('http://localhost:8080/'+this.type+'/edit',{
-        id:this.id,
-        name: this.newName, email:this.newEmail, phone:this.newPhone, groupId:this.newOption
+      console.log(this.newTeachers)
+
+      await axios.post('http://localhost:8080/'+this.type+'/create',{
+        time: this.newTime, classroom: this.newClassroom,
+        groupId:this.newGroups, disciplineId:this.newDisciplines, teacherId:this.newTeachers
       })
 
       window.location.href = '/view'+this.BType;
@@ -156,16 +166,8 @@ a {
   font-weight: lighter;
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
-  width: 120%;
 }
 
-.itemButton{
-  margin-left: -3vw;
-}
-
-.itemButton{
-  margin-left:-1.5vw
-}
 
 
 /*=========Інпути красиві==========*/
@@ -290,7 +292,7 @@ input:focus ~ .bar:after {
   text-decoration: none;
   display: inline-block;
   padding: 10px 30px;
-  margin: 10px 40px;
+  margin: 2vw auto;
   position: relative;
   overflow: hidden;
   border: 2px solid #53b43b;
@@ -320,6 +322,7 @@ input:focus ~ .bar:after {
   left: 150px;
   transition: .5s ease-in-out;
 }
+
 
 
 /*================Селект бокс================*/
@@ -364,5 +367,7 @@ input:focus ~ .bar:after {
   border-bottom: #e8e8e9 ;
   border-width: 1vw;
 }
+
+
 </style>
 

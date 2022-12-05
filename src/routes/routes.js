@@ -28,6 +28,8 @@ import SeeDepartments from "@/components/Departments/SeeDepartments";
 
 import ViewSchedules from "@/components/Schedules/ViewSchedules";
 import ChangeSchedules from "@/components/Schedules/ChangeSchedules";
+import SeeSchedules from "@/components/Schedules/SeeSchedules";
+import CreateSchedules from "@/components/Schedules/CreateSchedules";
 
 import ViewTeachers from "@/components/Teachers/ViewTeachers";
 import ChangeTeachers from "@/components/Teachers/ChangeTeachers";
@@ -71,6 +73,8 @@ const routes = [
 
     {path: '/viewSchedules', component: ViewSchedules},
     {path: '/changeSchedules', component: ChangeSchedules},
+    {path: '/seeSchedules', component: SeeSchedules},
+    {path: '/createSchedules', component: CreateSchedules},
 
     {path: '/viewStudents', component: ViewStudents},
     {path: '/changeStudents', component: ChangeStudents},

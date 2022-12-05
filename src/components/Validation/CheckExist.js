@@ -43,7 +43,7 @@ export class CheckExist {
     }
 
     static async checkSchedulesById(id){
-        let result=  (await (axios.get('http://localhost:8080/students/view/'+id))).data;
+        let result=  (await (axios.get('http://localhost:8080/schedules/view/'+id))).data;
         return result!=='';
     }
 

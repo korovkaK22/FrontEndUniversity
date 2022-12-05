@@ -30,6 +30,14 @@ export class InputValidation {
         return new RegExp(/^[a-z|0-9.]+@{1}[a-z|0-9]+\.{1}[a-z|0-9.]+$/).test(name);
     }
 
+    static checkTime(name){
+        return !(name.length<5 || name.length>=20)
+    }
+
+    static checkClassroom(name){
+        return !(name.length<2 || name.length>=20)
+    }
+
 
 
 
