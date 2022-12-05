@@ -43,11 +43,16 @@
       <div class=itemButton>
         <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
-
-      <div class=mistake>
-        {{mistake}}
-      </div>
     </form>
+
+    <!--  Помилка при Створенні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
+
 
 
 
@@ -77,6 +82,7 @@ export default {
     newDisciplines:'',
 
     mistake:'',
+    appearMistakes: '',
   }),
 
   mounted() {
@@ -102,30 +108,72 @@ export default {
         this.mistake='Невірно введена аудиторія'
         return;
       }
-      if (this.newTeachers==='' || !(await(CheckExist.checkTeachersById(this.newTeachers)))){ //===============
+      if (this.newTeachers===''){ //===============
         this.mistake='Такого викладача не існує!'
         return;
       }
-      if (this.newDisciplines==='' || !(await(CheckExist.checkDisciplinesById(this.newDisciplines)))){ //===============
+      if (this.newDisciplines==='' ){ //===============
         this.mistake='Такої дисципліни не існує!'
         return;
       }
-      if (this.newGroups==='' || !(await(CheckExist.checkGroupsById(this.newGroups)))){ //===============
+      if (this.newGroups===''){ //===============
         this.mistake='Такої групи не існує!'
         return;
       }
 
+      try{
+        if (!(await(CheckExist.checkTeachersById(this.newTeachers)))){
+          this.mistake='Такого викладача не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
+        return;
+      }
 
-      this.mistake='';
+      try{
+        if (!(await(CheckExist.checkDisciplinesById(this.newDisciplines)))){
+          this.mistake='Такої дисципліни не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
+        return;
+      }
 
-      console.log(this.newTeachers)
+      try{
+        if ( !(await(CheckExist.checkGroupsById(this.newGroups)))){
+          this.mistake='Такої групи не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
+        return;
+      }
 
-      await axios.post('http://localhost:8080/'+this.type+'/create',{
-        time: this.newTime, classroom: this.newClassroom,
-        groupId:this.newGroups, disciplineId:this.newDisciplines, teacherId:this.newTeachers
-      })
 
-      window.location.href = '/view'+this.BType;
+
+
+
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
+
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/' + this.type + '/create', {
+          groupId:this.newGroups, disciplineId:this.newDisciplines, teacherId:this.newTeachers
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -155,7 +203,7 @@ a {
 }
 
 .registrationForm{
-  width: 60%;
+  width: 15vw;
   margin: 0 auto;
 
 }
@@ -168,7 +216,18 @@ a {
   color: #9d0000;
 }
 
+.itemButton{
+  margin-left: 1.5vw
+}
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
 
 /*=========Інпути красиві==========*/
 /* form starting stylings */

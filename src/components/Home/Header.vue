@@ -93,7 +93,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewSchedules">Всі розклади</router-link> <br>
-            <router-link to="/createSchedules">Створити розклад</router-link> <br>
+            <router-link to="/createSchedules">Додати розклад</router-link> <br>
           </div>
         </div>
       </div>

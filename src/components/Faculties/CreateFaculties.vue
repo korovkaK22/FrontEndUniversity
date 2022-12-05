@@ -20,12 +20,16 @@
         <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
 
-      <div class=mistake>
-      {{mistake}}
-      </div>
+
     </form>
 
-
+    <!--  Помилка при Створенні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
 
 
   </div>
@@ -38,40 +42,53 @@ import {InputValidation} from "@/components/Validation/InputValidation";
 export default {
   name: "CreateFaculties", //===========
   data: () => ({
-    BType:'Faculties', //====================
-    type:'faculties', //====================
-    newName:'',
-    newShortName:'',
-    mistake:'',
-     }),
+    BType: 'Faculties', //====================
+    type: 'faculties', //====================
+    newName: '',
+    newShortName: '',
+    mistake: '',
+    appearMistakes: '',
+  }),
 
 
   methods: {
     async createNew() { //===================
-      if (!InputValidation.checkName(this.newName)){
-      this.mistake='Невірно введена назва'
-      return;
+      this.appearMistakes = ''
+      if (!InputValidation.checkName(this.newName)) {
+        this.mistake = 'Невірно введена назва'
+        return;
       }
-      if (!InputValidation.checkShortName(this.newShortName)){
-        this.mistake='Невірно введена Абревіатура'
-      return;
+      if (!InputValidation.checkShortName(this.newShortName)) {
+        this.mistake = 'Невірно введена Абревіатура'
+        return;
       }
 
 
-      this.mistake='';
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
 
-      await axios.post('http://localhost:8080/'+this.type+'/create',{
-      name: this.newName, shortName: this.newShortName
-      })
-
-      window.location.href = '/view'+this.BType;
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/' + this.type + '/create', {
+          name: this.newName, shortName: this.newShortName
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
 </script>
 
 <style scoped>
-
 
 
 .Vue {
@@ -93,24 +110,33 @@ a {
   text-decoration: none;
 }
 
-.registrationForm{
-  width: 60%;
+.registrationForm {
+  width: 20vw;
   margin: 0 auto;
+
 
 }
 
-.mistake{
+.mistake {
   text-align: center;
   font-style: italic;
   font-weight: lighter;
-  font:1.0em "Fira Sans", sans-serif;
+  font: 1.0em "Fira Sans", sans-serif;
   color: #9d0000;
 }
 
-.itemButton{
+.itemButton {
   margin-left: -3vw;
 }
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
 
 
 /*=========Інпути красиві==========*/
@@ -128,12 +154,13 @@ input {
   border: none;
   border-bottom: 1px solid #eaeaea;
 }
+
 input:focus {
   outline: none;
 }
 
 /* LABEL */
-input{
+input {
   background: none;
 
 }
@@ -164,6 +191,7 @@ input:focus ~ label, input:valid ~ label {
   display: block;
   width: 320px;
 }
+
 .bar:before, .bar:after {
   content: "";
   height: 2px;
@@ -175,9 +203,11 @@ input:focus ~ label, input:valid ~ label {
   -moz-transition: 0.2s ease all;
   -webkit-transition: 0.2s ease all;
 }
+
 .bar:before {
   left: 50%;
 }
+
 .bar:after {
   right: 50%;
 }
@@ -187,8 +217,6 @@ input:focus ~ .bar:before,
 input:focus ~ .bar:after {
   width: 50%;
 }
-
-
 
 
 /*=======Кнопочки красиві========== */
@@ -227,7 +255,6 @@ input:focus ~ .bar:after {
   left: 150px;
   transition: .5s ease-in-out;
 }
-
 
 
 .green-shine-button {

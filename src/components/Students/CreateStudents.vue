@@ -33,12 +33,16 @@
       <div class=itemButton>
         <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
-
-      <div class=mistake>
-        {{mistake}}
-      </div>
     </form>
 
+
+      <!--  Помилка при Створенні-->
+      <div class=appearMistake>
+        {{ appearMistakes }}
+      </div>
+      <div class=mistake>
+        {{ mistake }}
+      </div>
 
 
 
@@ -61,6 +65,7 @@ export default {
     newOption:'',
     options:[],
     mistake:'',
+    appearMistakes: '',
   }),
 
   mounted() {
@@ -73,6 +78,7 @@ export default {
     },
 
     async createNew() { //===================
+      this.appearMistakes = ''
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введене ім\'я'
         return;
@@ -85,18 +91,41 @@ export default {
         this.mistake='Невірно введений номер телефону'
         return;
       }
-      if (this.newOption==='' || !(await(CheckExist.checkGroupsById(this.newOption)))){ //===============
+      if (this.newOption===''){ //===============
         this.mistake='Такої групи не існує!'
         return;
       }
 
-      this.mistake='';
+      try{
+        if (!(await(CheckExist.checkGroupsById(this.newOption)))){
+          this.mistake='Такої групи не існує!'
+          return;
+        }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
+        return;
+      }
 
-      await axios.post('http://localhost:8080/'+this.type+'/create',{
-        name: this.newName, email:this.newEmail, phone:this.newPhone, groupId:this.newOption
-      })
 
-      window.location.href = '/view'+this.BType;
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
+
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/' + this.type + '/create', {
+          name: this.newName, email:this.newEmail, phone:this.newPhone, groupId:this.newOption
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -126,10 +155,11 @@ a {
 }
 
 .registrationForm{
-  width: 60%;
+  width: 20vw;
   margin: 0 auto;
 
 }
+
 
 .mistake{
   text-align: center;
@@ -138,15 +168,26 @@ a {
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
   width: 120%;
+  margin-left:-3vw;
+
 }
 
 .itemButton{
-  margin-left: -3vw;
+  margin-left: 2vw;
+  margin-top:1vw;
 }
 
-.itemButton{
-  margin-left:1vw
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+  mergin-left:1vw
+
 }
+
 
 
 /*=========Інпути красиві==========*/

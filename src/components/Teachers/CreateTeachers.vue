@@ -32,10 +32,15 @@
         <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
 
-      <div class=mistake>
-        {{mistake}}
-      </div>
-    </form>
+      </form>
+
+    <!--  Помилка при Створенні-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
 
 
 
@@ -57,6 +62,7 @@ export default {
     newEmail:'',
     newPhone:'',
     mistake:'',
+    appearMistakes: '',
   }),
 
 
@@ -80,13 +86,25 @@ export default {
       }
 
 
-      this.mistake='';
+      //Додавання і чек на помилку
+      this.mistake = await this.tryToCreate()
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
 
-      await axios.post('http://localhost:8080/'+this.type+'/create',{
-        name: this.newName, surname: this.newSurname, email:this.newEmail, phone:this.newPhone
-      })
-
-      window.location.href = '/view'+this.BType;
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/' + this.type + '/create', {
+          name: this.newName, surname: this.newSurname, email:this.newEmail, phone:this.newPhone
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -116,9 +134,13 @@ a {
 }
 
 .registrationForm{
-  width: 60%;
+  width: 20vw;
   margin: 0 auto;
 
+}
+
+.itemButton{
+  margin-left: 4vw
 }
 
 .mistake{
@@ -128,15 +150,24 @@ a {
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
   width: 120%;
-}
-
-.itemButton{
   margin-left: -3vw;
 }
+
 
 .itemButton{
   margin-left:1vw
 }
+
+
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
+}
+
 
 
 /*=========Інпути красиві==========*/

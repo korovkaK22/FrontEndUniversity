@@ -1,6 +1,6 @@
 <template>
   <div class="Vue">
-    <div class=titleText>Додати Факультет</div>
+    <div class=titleText>Додати Відділ</div>
 
     <form class="registrationForm">
 
@@ -31,10 +31,15 @@
         <a @click=" createNew();" class="green-shine-button">Створити</a>
       </div>
 
-      <div class=mistake>
-        {{mistake}}
-      </div>
     </form>
+      <!--  Помилка при Створенні-->
+      <div class=appearMistake>
+        {{ appearMistakes }}
+      </div>
+      <div class=mistake>
+        {{ mistake }}
+      </div>
+
 
 
 
@@ -59,6 +64,7 @@ export default {
     options:[],
     newOption:'',
     mistake:'',
+    appearMistakes: '',
 
   }),
 
@@ -74,7 +80,7 @@ export default {
     },
 
     async createNew() {                                                     //===================
-
+      this.appearMistakes = ''
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введена назва'
         return;
@@ -83,20 +89,42 @@ export default {
         this.mistake='Невірно введена Абревіатура'
         return;
       }
-      if (this.newOption==='' || !(await(CheckExist.checkFacultyById(this.newOption)))){ //===============
+      if (this.newOption==='' ){ //===============
         this.mistake='Такого факультету не існує!'
         return;
       }
 
+      try{
+      if (!(await(CheckExist.checkFacultyById(this.newOption)))){
+        this.mistake='Такого факультету не існує!'
+        return;
+      }}catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake=error;
+        return;
+      }
 
-      this.mistake='';
 
-      await axios.post('http://localhost:8080/'+this.type+'/create',{
-        name: this.newName, shortName: this.newShortName,
-        facultyId:this.newOption
-      })
+      //Додавання і чек на помилку
+      this.mistake = await (this.tryToCreate())
+      if (this.mistake === '') {
+        window.location.href = '/view' + this.BType + ''
+      } else {
+        this.appearMistakes = "Виникла помилка при створенні..."
+      }
+    },
 
-      window.location.href = '/view'+this.BType;
+    async tryToCreate() {
+      let result = ''
+      try {
+        result = (await axios.post('http://localhost:8080/' + this.type + '/create', {
+          name: this.newName, shortName: this.newShortName,
+          facultyId:this.newOption
+        })).data;
+      } catch (error) {
+        result = error;
+      }
+      return result;
     },
   }
 }
@@ -126,7 +154,7 @@ a {
 }
 
 .registrationForm{
-  width: 60%;
+  width: 20vw;
   margin: 0 auto;
 
 }
@@ -137,6 +165,20 @@ a {
   font-weight: lighter;
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
+}
+
+.itemButton{
+  margin-left: 4vw
+}
+
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 3vw;
+  margin-bottom: 1vw;
 }
 
 
