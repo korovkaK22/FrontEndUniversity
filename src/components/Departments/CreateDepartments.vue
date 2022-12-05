@@ -263,7 +263,7 @@ input:focus ~ .bar:after {
   text-decoration: none;
   display: inline-block;
   padding: 10px 30px;
-  margin: 10px 40px;
+  margin: 2vw auto;
   position: relative;
   overflow: hidden;
   border: 2px solid #53b43b;

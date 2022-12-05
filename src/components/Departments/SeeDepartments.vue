@@ -9,8 +9,13 @@
       <div class=description>
         Назва: <span class=italic> {{ data.name }}; </span><br>
         Абревіатура:  <span class=italic> {{ data.short_name }};  </span> <br>
-        Факультет:  <span class=italic> {{ data.faculty_id }};  </span> <br>
+        Факультет:  <span class=italic>
+        <router-link v-bind:to="('/seeFaculties/?id='+data.faculty_id)">
+        {{ faculties.name }};
+        </router-link>
+      </span> <br>
       </div>
+
 
       <!--Кнопочки-->
       <div class=rowButton>
@@ -66,6 +71,7 @@ export default {
     id: 0,
     mistake:'',
     appearMistakes:'',
+    faculties:'null',
   }),
 
   mounted() {
@@ -84,6 +90,7 @@ export default {
       //Підгрузка даних
       this.id = res
       this.data = (await (axios.get('http://localhost:8080/'+this.type+'/view/' + this.id))).data;
+      this.faculties= (await (axios.get('http://localhost:8080/faculties/view/'+this.data.faculty_id))).data;
     },
 
 
@@ -168,6 +175,10 @@ export default {
   font-size:2vw;
 }
 
+a {
+  color: #3c5994;
+  text-decoration: none;
+}
 
 
 /*=======Кнопочки красиві========== */

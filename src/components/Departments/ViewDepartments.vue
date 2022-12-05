@@ -23,7 +23,9 @@
             {{ l.short_name }}
           </td>
           <td>
-            {{l.faculty_id}} //============
+            <router-link v-bind:to="('/seeFaculties/?id='+l.faculty_id)">
+            {{getFaculties(l.faculty_id)}}
+            </router-link>
           </td>
         </tr>
         </tbody>
@@ -46,6 +48,7 @@ export default {
     type:'departments', //====================
 
     lists: [],
+    faculties:[],
 
   }),
   mounted() {
@@ -53,12 +56,19 @@ export default {
   },
 
   methods: {
-    async getFaculties(id) {
-      return  (await (axios.get('http://localhost:8080/faculties/view/'+id))).data;
+    getFaculties(id) {
+     let result = null;
+     for (const element of this.faculties) {
+        if (element.id ===id){
+          result=element;}
+      }
+      return result!==null ?  result.name: null;
     },
+
 
     async initialise() {
       this.lists = (await (axios.get('http://localhost:8080/'+this.type+'/viewALL'))).data;
+      this.faculties = (await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
     },
 
   }
