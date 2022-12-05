@@ -34,7 +34,7 @@ import axios from "axios";
 
 
 export default {
-  name: "ViewFaculties",
+  name: "ViewFaculties", //====================
 
 
   data: () => ({

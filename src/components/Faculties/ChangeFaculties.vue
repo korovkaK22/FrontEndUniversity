@@ -1,29 +1,32 @@
 <template>
   <div class="Vue">
-    <div class=titleText>Редагувати Факультет</div>
-
     <span v-if="id!==0">
+      <div class=titleText>Редагувати Факультет</div>
+
     <form class="registrationForm">
       <div class="group">
         <input type="text" v-model="newName" required>
         <span class="bar"></span>
         <label>Назва Факультету</label>
       </div>
+
       <div class="group">
         <input type="text" v-model="newShortName" required>
         <span class="bar"></span>
         <label>Абревіатура</label>
       </div>
+
       <div class=itemButton>
         <a @click=" editObject();" class="green-shine-button">Зберегти</a>
       </div>
+
       <div class=mistake>
         {{mistake}}
       </div>
     </form>
     </span>
 
-    <!--    Факультет не найшли-->
+    <!--    По айдішніку не найшли-->
     <span v-else>
     <div class="dontFound">
         Факультет не знайдено.<br> Перевірте правильність набору
@@ -42,6 +45,8 @@ import {CheckExist} from "@/components/Validation/CheckExist";
 export default {
   name: "ChangeFaculties",
   data: () => ({
+    BType:'Faculties', //====================
+    type:'faculties', //====================
     id: 0,
     newName:'',
     newShortName:'',
@@ -57,20 +62,20 @@ export default {
     async initialise() {
       //Вичислить id
       let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkFacultyById(res))) {
+      if (res === '' || !(await CheckExist.checkFacultyById(res))) {   //====================
         return;
       }
 
       //Підгрузка даних
       this.id = res
-      let data = (await (axios.get('http://localhost:8080/faculties/view/' + this.id))).data;
+      let data = (await (axios.get('http://localhost:8080/'+this.type+'/view/' + this.id))).data;
       this.newName=data.name;
       this.newShortName=data.short_name;
     },
 
     async editObject() {
       if (!InputValidation.checkName(this.newName)){
-        this.mistake='Невірно введене ім\'я'
+        this.mistake='Невірно введена назва'
         return;
       }
       if (!InputValidation.checkShortName(this.newShortName)){
@@ -80,12 +85,12 @@ export default {
 
       this.mistake='';
 
-      await axios.post('http://localhost:8080/faculties/edit',{
+      await axios.post('http://localhost:8080/'+this.type+'/edit',{
         id: this.id,
-        name: this.newName, shortName: this.newShortName
+        name: this.newName, shortName: this.newShortName  //====================
       })
 
-      window.location.href = '/seeFaculties/?id='+this.id+'/?id='+this.id;
+      window.location.href = '/see'+this.BType+'/?id='+this.id;
     },
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="Vue">
-    <div class=titleText>Створити Факультет</div>
+    <div class=titleText>Додати Факультет</div>
 
     <form class="registrationForm">
 
@@ -76,7 +76,7 @@ export default {
     async createNew() {                                                     //===================
 
       if (!InputValidation.checkName(this.newName)){
-        this.mistake='Невірно введене ім\'я'
+        this.mistake='Невірно введена назва'
         return;
       }
       if (!InputValidation.checkShortName(this.newShortName)){

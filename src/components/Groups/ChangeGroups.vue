@@ -1,5 +1,6 @@
 <template>
   <div class="Vue">
+    <span v-if="id!==0">
     <div class=titleText>Редагувати Групу</div>
 
     <form class="registrationForm">
@@ -35,10 +36,15 @@
       </div>
     </form>
 
-
-
-
+    </span>
+    <!--    По айдішніку не найшли-->
+    <span v-else>
+    <div class="dontFound">
+        Групу не знайдено.<br> Перевірте правильність набору
+    </div>
+  </span>
   </div>
+
 </template>
 
 <script>
@@ -87,7 +93,7 @@ export default {
     async createNew() {                                                     //===================
 
       if (!InputValidation.checkName(this.newName)){
-        this.mistake='Невірно введене ім\'я'
+        this.mistake='Невірно введена назва'
         return;
       }
       if (!InputValidation.checkCourse(this.newCourse)){
@@ -108,7 +114,7 @@ export default {
         departmentId:this.newOption
       })
 
-      window.location.href = '/view'+this.BType+'/?id='+this.id;
+      window.location.href = '/see'+this.BType+'/?id='+this.id;
     },
   }
 }

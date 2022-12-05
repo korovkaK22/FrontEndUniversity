@@ -1,31 +1,14 @@
 <template>
   <div class="Vue">
-    <div class=titleText>Додати Групу</div>
+    <div class=titleText>Додати Дисципліну</div>
 
     <form class="registrationForm">
 
       <div class="group">
         <input type="text" v-model="newName" required>
         <span class="bar"></span>
-        <label>Назва групи</label>
+        <label>Назва Дисципліни</label>
       </div>
-
-      <div class="group">
-        <input type="text" v-model="newCourse" required>
-        <span class="bar"></span>
-        <label>Курс</label>
-      </div>
-
-
-      <div class="selectBox">
-        <select v-model="newOption" >
-          <option value="" disabled selected >Відділ</option>
-          <option v-for="o in options" :key="o.id"
-                  v-bind:value=o.id>{{o.name}}</option>
-        </select>
-      </div>
-
-
 
       <div class=itemButton>
         <a @click=" createNew();" class="green-shine-button">Створити</a>
@@ -44,47 +27,22 @@
 
 <script>
 import axios from "axios";
-
 import {InputValidation} from "@/components/Validation/InputValidation";
-import {CheckExist} from "@/components/Validation/CheckExist";
 
 export default {
-
-  name: "CreateGroups", //===========
+  name: "CreateDisciplines", //===========
   data: () => ({
-    BType:'Groups', //====================
-    type:'groups', //====================
+    BType:'Disciplines', //====================
+    type:'disciplines', //====================
     newName:'',
-    newCourse:'',
-    options:[],
-    newOption:'',
     mistake:'',
-
   }),
 
-  mounted() {
-    this.initialise();
-  },
 
   methods: {
-
-
-    async initialise() {
-      this.options=(await (axios.get('http://localhost:8080/departments/viewALL'))).data;
-    },
-
-    async createNew() {                                                     //===================
-
+    async createNew() { //===================
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введена назва'
-        return;
-      }
-      if (!InputValidation.checkCourse(this.newCourse)){
-        this.mistake='Невірно введений курс'
-        return;
-      }
-      if (this.newOption==='' || !(await(CheckExist.checkDepartmentById(this.newOption)))){ //===============
-        this.mistake='Такого відділу не існує!'
         return;
       }
 
@@ -92,8 +50,7 @@ export default {
       this.mistake='';
 
       await axios.post('http://localhost:8080/'+this.type+'/create',{
-        name: this.newName, course: this.newCourse,
-        departmentId:this.newOption
+        name: this.newName, shortName: this.newShortName
       })
 
       window.location.href = '/view'+this.BType;
@@ -137,6 +94,10 @@ a {
   font-weight: lighter;
   font:1.0em "Fira Sans", sans-serif;
   color: #9d0000;
+}
+
+.itemButton{
+  margin-left: -3vw;
 }
 
 
@@ -263,7 +224,7 @@ input:focus ~ .bar:after {
   text-decoration: none;
   display: inline-block;
   padding: 10px 30px;
-  margin: 2vw auto;
+  margin: 10px 40px;
   position: relative;
   overflow: hidden;
   border: 2px solid #53b43b;
@@ -293,52 +254,5 @@ input:focus ~ .bar:after {
   left: 150px;
   transition: .5s ease-in-out;
 }
-
-
-
-/*================Селект бокс================*/
-
-.selectBox{
-
-  font-size: 18px;
-  color: #1c87c9;
-  border-radius: 5px;
-  box-shadow: 4px 4px #ccc;
-  margin: 0 auto;
-  background: none;
-  border:none;
-
-}
-
-.selectBox select{
-  padding-left: 1vw;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  color: #999;
-  width: 100%;
-  height: 4vw;
-  background: none;
-  font-size: 120%;
-
-
-  border-top: rgba(104, 12, 154, 0.09);
-  border-left: rgba(104, 12, 154, 0.09);
-  border-right: rgba(104, 12, 154, 0.09);
-  border-bottom: #e8e8e9 ;
-  border-width: 1vw;
-}
-
-.selectBox option{
-  background: none;
-
-  border-top: rgba(104, 12, 154, 0.09);
-  border-left: rgba(104, 12, 154, 0.09);
-  border-right: rgba(104, 12, 154, 0.09);
-  border-bottom: #e8e8e9 ;
-  border-width: 1vw;
-}
-
-
 </style>
 

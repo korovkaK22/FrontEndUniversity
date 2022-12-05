@@ -1,5 +1,7 @@
 <template>
-  <div class="Vue">
+   <div class="Vue">
+
+    <span v-if="id!==0">
     <div class=titleText>Редагувати Питання</div>
 
     <form class="registrationForm">
@@ -27,9 +29,15 @@
       {{mistake}}
       </div>
 
-
-
+    </span>
+    <!--    По айдішніку не найшли-->
+    <span v-else>
+    <div class="dontFound">
+        Питання не знайдено.<br> Перевірте правильність набору
+    </div>
+  </span>
   </div>
+
 </template>
 
 <script>
@@ -82,7 +90,7 @@ export default {
         question: this.newName, answer: this.newShortName
       })
 
-      window.location.href = '/seeFaq/?id='+this.id+'/?id='+this.id;
+      window.location.href = '/seeFaq/?id='+this.id;
     },
   }
 }

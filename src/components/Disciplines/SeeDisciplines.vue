@@ -4,18 +4,11 @@
 
     <div v-if="id!==0">
 
-      <div class=titleText>Відділ <span class=italic><br>" {{ data.name }} "  </span></div>
+      <div class=titleText>Дисципліна <span class=italic><br>" {{ data.name }} "  </span></div>
 
       <div class=description>
         Назва: <span class=italic> {{ data.name }}; </span><br>
-        Абревіатура:  <span class=italic> {{ data.short_name }};  </span> <br>
-        Факультет:  <span class=italic>
-        <router-link v-bind:to="('/seeFaculties/?id='+data.faculty_id)">
-        {{ faculties.name }};
-        </router-link>
-      </span> <br>
       </div>
-
 
       <!--Кнопочки-->
       <div class=rowButton>
@@ -32,7 +25,7 @@
     <!--    Факультет не найшли-->
     <div v-else>
       <div class="dontFound">
-        Департамент не знайдено.<br> Перевірте правильність набору
+        Дисципліну не знайдено.<br> Перевірте правильність набору
       </div>
     </div>
 
@@ -63,15 +56,14 @@ import {CheckExist} from "@/components/Validation/CheckExist";
 
 
 export default {
-  name: "SeeDepartments", //====================
+  name: "SeeDisciplines", //=================
   data: () => ({
-    BType:'Departments', //====================
-    type:'departments', //====================
+    BType:'Disciplines', //====================
+    type:'disciplines', //====================
     data: [],
     id: 0,
     mistake:'',
     appearMistakes:'',
-    faculties:'null',
   }),
 
   mounted() {
@@ -83,27 +75,28 @@ export default {
     async initialise() {
       //Вичислить id
       let res = new URL(location.href).searchParams.get('id');
-      if (res === '' || !(await CheckExist.checkDepartmentById(res))) {  //===================
+      if (res === '' || !(await CheckExist.checkDisciplinesById(res))) { //=================
         return;
       }
 
       //Підгрузка даних
       this.id = res
       this.data = (await (axios.get('http://localhost:8080/'+this.type+'/view/' + this.id))).data;
-      this.faculties= (await (axios.get('http://localhost:8080/faculties/view/'+this.data.faculty_id))).data;
     },
 
 
     async deleteObject(){
       this.mistake= (await (axios.delete('http://localhost:8080/'+this.type+'/delete?id=' + this.id))).data;
-      console.log(this.mistake)
-      if (this.mistake==='') {
+      if (this.mistake===''){
         window.location.href = '/view'+this.BType+''}
       else{
         //Помилка пішла
         this.appearMistakes="Виникла помилка при видаленні..."
       }
     }
+
+
+
 
 
   }
@@ -173,10 +166,6 @@ export default {
   font-size:2vw;
 }
 
-a {
-  color: #3c5994;
-  text-decoration: none;
-}
 
 
 /*=======Кнопочки красиві========== */

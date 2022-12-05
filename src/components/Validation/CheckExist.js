@@ -27,6 +27,11 @@ export class CheckExist {
         return result!=='';
     }
 
+    static async checkDisciplinesById(id){
+        let result=  (await (axios.get('http://localhost:8080/disciplines/view/'+id))).data;
+        return result!=='';
+    }
+
 
 
 

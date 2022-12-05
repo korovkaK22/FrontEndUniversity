@@ -18,6 +18,8 @@ import ChangeGroups from "@/components/Groups/ChangeGroups";
 
 import ViewDisciplines from "@/components/Disciplines/ViewDisciplines";
 import ChangeDisciplines from "@/components/Disciplines/ChangeDisciplines";
+import CreateDisciplines from "@/components/Disciplines/CreateDisciplines";
+import SeeDisciplines from "@/components/Disciplines/SeeDisciplines";
 
 import ViewDepartments from "@/components/Departments/ViewDepartments";
 import ChangeDepartments from "@/components/Departments/ChangeDepartments";
@@ -55,6 +57,8 @@ const routes = [
 
     {path: '/viewDisciplines', component: ViewDisciplines},
     {path: '/changeDisciplines', component: ChangeDisciplines},
+    {path: '/createDisciplines', component: CreateDisciplines},
+    {path: '/seeDisciplines', component: SeeDisciplines},
 
     {path: '/viewDepartments', component: ViewDepartments},
     {path: '/changeDepartments', component: ChangeDepartments},

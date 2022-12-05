@@ -26,7 +26,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewFaculties">Всі факультети</router-link> <br>
-            <router-link to="/createFaculties">Створити факультет</router-link> <br>
+            <router-link to="/createFaculties">Додати факультет</router-link> <br>
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewDepartments">Всі відділи</router-link> <br>
-            <router-link to="/createDepartments">Створити відділ</router-link> <br>
+            <router-link to="/createDepartments">Додати відділ</router-link> <br>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewGroups">Всі групи</router-link> <br>
-            <router-link to="/createGroups">Створити групу</router-link> <br>
+            <router-link to="/createGroups">Додати групу</router-link> <br>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewStudents">Всі студенти</router-link> <br>
-            <router-link to="/changeStudents">Редагувати студентів</router-link> <br>
+            <router-link to="/createStudents">Додати студента</router-link> <br>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewTeachers">Всі Викладачі</router-link> <br>
-            <router-link to="/changeTeachers">Редагувати Викладачів</router-link> <br>
+            <router-link to="/createTeachers">Додати Викладача</router-link> <br>
           </div>
         </div>
       </div>
@@ -82,7 +82,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewDisciplines">Всі дисципліни</router-link> <br>
-            <router-link to="/changeDisciplines">Редагувати дисципліни</router-link> <br>
+            <router-link to="/createDisciplines">Додати дисципліну</router-link> <br>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewSchedules">Всі розклади</router-link> <br>
-            <router-link to="/changeSchedules">Змінити розклади</router-link> <br>
+            <router-link to="/createSchedules">Створити розклад</router-link> <br>
           </div>
         </div>
       </div>
