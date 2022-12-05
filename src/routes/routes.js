@@ -19,7 +19,7 @@ import ChangeDisciplines from "@/components/Disciplines/ChangeDisciplines";
 
 import ViewDepartments from "@/components/Departments/ViewDepartments";
 import ChangeDepartments from "@/components/Departments/ChangeDepartments";
-import CreateDepartments from "@/components/Departments/ViewDepartments";
+import CreateDepartments from "@/components/Departments/CreateDepartments";
 import SeeDepartments from "@/components/Departments/SeeDepartments";
 
 import ViewSchedules from "@/components/Schedules/ViewSchedules";

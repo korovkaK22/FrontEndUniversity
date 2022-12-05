@@ -23,7 +23,7 @@
             {{ l.short_name }}
           </td>
           <td>
-            {{ l.faculty_id }}
+            {{l.faculty_id}} //============
           </td>
         </tr>
         </tbody>
@@ -53,6 +53,10 @@ export default {
   },
 
   methods: {
+    async getFaculties(id) {
+      return  (await (axios.get('http://localhost:8080/faculties/view/'+id))).data;
+    },
+
     async initialise() {
       this.lists = (await (axios.get('http://localhost:8080/'+this.type+'/viewALL'))).data;
     },

@@ -38,7 +38,7 @@
           <i class="fa-solid fa-arrow-down fa-sm"></i>
           <div class="dropdown-list">
             <router-link to="/viewDepartments">Всі відділи</router-link> <br>
-            <router-link to="/changeDepartments">Редагувати відділи</router-link> <br>
+            <router-link to="/createDepartments">Створити відділ</router-link> <br>
           </div>
         </div>
       </div>

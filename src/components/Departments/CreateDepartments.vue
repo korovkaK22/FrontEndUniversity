@@ -16,11 +16,16 @@
         <label>Абревіатура</label>
       </div>
 
-      <div class="group">
-        <input type="text" v-model="newShortName" required>
-        <span class="bar"></span>
-        <label>Факультет</label>
+
+      <div class="selectBox">
+        <select v-model="newOption" >
+          <option value="" disabled selected >Факультет</option>
+          <option v-for="o in options" :key="o.id"
+             v-bind:value=o.id>{{o.name}}</option>
+        </select>
       </div>
+
+
 
       <div class=itemButton>
         <a @click=" createNew();" class="green-shine-button">Створити</a>
@@ -39,21 +44,37 @@
 
 <script>
 import axios from "axios";
+
 import {InputValidation} from "@/components/Validation/InputValidation";
+import {CheckExist} from "@/components/Validation/CheckExist";
 
 export default {
+
   name: "CreateDepartments", //===========
   data: () => ({
     BType:'Departments', //====================
     type:'departments', //====================
     newName:'',
     newShortName:'',
+    options:[],
+    newOption:'',
     mistake:'',
+
   }),
 
+  mounted() {
+    this.initialise();
+  },
 
   methods: {
-    async createNew() { //===================
+
+
+    async initialise() {
+      this.options=(await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
+    },
+
+    async createNew() {                                                     //===================
+
       if (!InputValidation.checkName(this.newName)){
         this.mistake='Невірно введене ім\'я'
         return;
@@ -62,12 +83,17 @@ export default {
         this.mistake='Невірно введена Абревіатура'
         return;
       }
+      if (this.newOption==='' || !(await(CheckExist.checkFacultyById(this.newOption)))){
+        this.mistake='Такого факультету не існує!'
+        return;
+      }
 
 
       this.mistake='';
 
       await axios.post('http://localhost:8080/'+this.type+'/create',{
-        name: this.newName, shortName: this.newShortName
+        name: this.newName, shortName: this.newShortName,
+        facultyId:this.newOption
       })
 
       window.location.href = '/view'+this.BType;
@@ -267,5 +293,52 @@ input:focus ~ .bar:after {
   left: 150px;
   transition: .5s ease-in-out;
 }
+
+
+
+/*================Селект бокс================*/
+
+.selectBox{
+
+  font-size: 18px;
+  color: #1c87c9;
+  border-radius: 5px;
+  box-shadow: 4px 4px #ccc;
+  margin: 0 auto;
+  background: none;
+  border:none;
+
+}
+
+.selectBox select{
+  padding-left: 1vw;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  color: #999;
+  width: 100%;
+  height: 4vw;
+  background: none;
+  font-size: 120%;
+
+
+  border-top: rgba(104, 12, 154, 0.09);
+  border-left: rgba(104, 12, 154, 0.09);
+  border-right: rgba(104, 12, 154, 0.09);
+  border-bottom: #e8e8e9 ;
+  border-width: 1vw;
+}
+
+.selectBox option{
+  background: none;
+
+  border-top: rgba(104, 12, 154, 0.09);
+  border-left: rgba(104, 12, 154, 0.09);
+  border-right: rgba(104, 12, 154, 0.09);
+  border-bottom: #e8e8e9 ;
+  border-width: 1vw;
+}
+
+
 </style>
 
