@@ -67,6 +67,7 @@ export default {
   }),
 
   mounted() {
+    this.checkConnection();
     this.initialise();
   },
 
@@ -93,10 +94,8 @@ export default {
         //Помилка пішла
         this.appearMistakes="Виникла помилка при видаленні..."
       }
-    }
-
-
-
+    },
+    async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}},
 
 
   }

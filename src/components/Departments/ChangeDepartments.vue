@@ -76,6 +76,7 @@ export default {
   }),
 
   mounted() {
+    this.checkConnection();
     this.initialise();
   },
 
@@ -134,6 +135,7 @@ export default {
 
       window.location.href = '/see'+this.BType+'/?id='+this.id;
     },
+    async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}},
   }
 }
 </script>

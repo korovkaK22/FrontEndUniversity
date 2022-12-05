@@ -9,7 +9,7 @@
         <label>Питання</label>
       </div>
 
-      <textarea v-model="newShortName" name="textComment"
+      <textarea v-model="newShortName" name="textComment" class="textComment"
                 placeholder="Відповідь"
                 style="padding-bottom:250px ;
                 background: rgba(134,137,180,0.16);
@@ -34,15 +34,13 @@
     </div>
 
 
-
-
-
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import {InputValidation} from "@/components/Validation/InputValidation";
+import {CheckExist} from "@/components/Validation/CheckExist";
 
 export default {
   name: "CreateFAQ",
@@ -52,6 +50,10 @@ export default {
     mistake:'',
     appearMistakes: '',
      }),
+
+  mounted(){
+    this.checkConnection();
+  },
 
 
   methods: {
@@ -87,6 +89,7 @@ export default {
       }
       return result;
     },
+    async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}},
   }
 }
 </script>
@@ -129,7 +132,7 @@ a {
 }
 
 .greenButton{
-  margin:0 auto;
+  margin-left:-2vw;
 }
 
 .appearMistake {
@@ -141,7 +144,9 @@ a {
   font-size: 2vw;
 }
 
-
+.textComment{
+  margin-left: -3vw;
+}
 
 /*=========Інпути красиві==========*/
 /* form starting stylings */

@@ -76,6 +76,7 @@ export default {
 
   }),
   mounted() {
+    this.checkConnection();
     this.initialise();
   },
 
@@ -114,6 +115,7 @@ export default {
       this.disciplines = (await (axios.get('http://localhost:8080/disciplines/viewALL'))).data;
       this.groups = (await (axios.get('http://localhost:8080/groups/viewALL'))).data;
     },
+    async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}}
 
   }
 }

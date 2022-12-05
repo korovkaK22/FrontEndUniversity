@@ -2,9 +2,13 @@ import axios from 'axios'
 
 export class CheckExist {
 
-    static async checkUserById(id){
-        let result=  (await (axios.get('http://localhost:8080/api/user/'+id))).data;
-        return result!=='';
+    static async checkConnection(){
+        try {
+            let result = (await (axios.get('http://localhost:8080/other/checkConnection'))).data;
+            return result !== '';
+        } catch (error){
+            return false;
+        }
     }
 
    static async checkFacultyById(id){

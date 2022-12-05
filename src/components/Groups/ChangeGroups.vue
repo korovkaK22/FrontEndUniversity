@@ -76,6 +76,7 @@ export default {
 
   mounted() {
     this.initialise();
+    this.checkConnection();
   },
 
   methods: {
@@ -146,6 +147,7 @@ export default {
       }
       return result;
     },
+    async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}},
   }
 }
 </script>

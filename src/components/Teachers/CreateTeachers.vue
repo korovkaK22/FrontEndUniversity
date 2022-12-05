@@ -51,6 +51,7 @@
 <script>
 import axios from "axios";
 import {InputValidation} from "@/components/Validation/InputValidation";
+import {CheckExist} from "@/components/Validation/CheckExist";
 
 export default {
   name: "CreateTeachers", //===========
@@ -64,6 +65,10 @@ export default {
     mistake:'',
     appearMistakes: '',
   }),
+
+  mounted() {
+    this.checkConnection();
+  },
 
 
   methods: {
@@ -107,6 +112,7 @@ export default {
       }
       return result;
     },
+    async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}}
   }
 }
 </script>

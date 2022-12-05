@@ -26,6 +26,7 @@
 
 <script>
 import axios from "axios";
+import {CheckExist} from "@/components/Validation/CheckExist";
 
 
 
@@ -41,6 +42,7 @@ export default {
 
   }),
   mounted() {
+    this.checkConnection();
     this.initialise();
   },
 
@@ -48,6 +50,7 @@ export default {
     async initialise() {
       this.lists = (await (axios.get('http://localhost:8080/'+this.type+'/viewALL'))).data;
     },
+    async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}},
 
   }
 }

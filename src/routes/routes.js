@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router/dist/vue-router.esm-bundler'
 import Home from '../components/Home/Home.vue'
+import NoConnection from '../components/Home/NoConnection.vue'
 
 import ViewFAQ from '../components/FAQ/FAQ.vue'
 import SeeFAQ from '../components/FAQ/SeeFAQ.vue'
@@ -45,6 +46,7 @@ import CreateStudents from "@/components/Students/CreateStudents";
 const routes = [
     {path: '/', component: Home},
     {path: '/home', component: Home},
+    {path: '/noConnection', component: NoConnection},
 
     {path: '/viewFaq', component: ViewFAQ},
     {path: '/seeFaq', component: SeeFAQ},
