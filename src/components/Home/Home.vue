@@ -1,5 +1,4 @@
 <template>
-це хом сторінка
 
   <router-link to="/noConnection">но коннектіон</router-link> <br>
 </template>

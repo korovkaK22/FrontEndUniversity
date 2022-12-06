@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router/dist/vue-router.esm-bundler'
 import Home from '../components/Home/Home.vue'
 import NoConnection from '../components/Home/NoConnection.vue'
+import NoFoundPage from '../components/Home/NoFoundPage.vue'
 
 import ViewFAQ from '../components/FAQ/FAQ.vue'
 import SeeFAQ from '../components/FAQ/SeeFAQ.vue'
@@ -47,6 +48,10 @@ const routes = [
     {path: '/', component: Home},
     {path: '/home', component: Home},
     {path: '/noConnection', component: NoConnection},
+    {path: "/:catchAll(.*)",
+        name: "NotFound",
+        component: NoFoundPage,},
+
 
     {path: '/viewFaq', component: ViewFAQ},
     {path: '/seeFaq', component: SeeFAQ},
