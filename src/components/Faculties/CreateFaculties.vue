@@ -132,7 +132,7 @@ a {
 }
 
 .itemButton {
-  margin-left: -3vw;
+  margin-left: 1vw;
 }
 
 .appearMistake {

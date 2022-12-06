@@ -7,7 +7,6 @@
     <router-link v-bind:to="'/createFaq'">Створити нове питання</router-link> <br>
     </div>
 
-
       <div class = articles v-if="articles.length!==0">
            <li v-for="article in articles" :key="article.id">
             <span class = question>
@@ -16,11 +15,9 @@
             <span class = answer>{{ article.answer }} </span>
           </li>
       </div>
-
-    <div v-else>
-      Ще не має дописів. Створити новий
-    </div>
-
+      <div class = noTable v-else>
+        Ще не додано дописів.
+      </div>
 
 
   </div>
@@ -48,10 +45,8 @@ export default {
 
   methods:{
     async initialiseAllArticles(){
-
-    // this.articles=  (await (axios.get('http://localhost:8080/faq/viewALL'))).data;
-
-     },
+    this.articles=  (await (axios.get('http://localhost:8080/faq/viewALL'))).data;
+      },
 
     async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}},
   }
@@ -100,6 +95,12 @@ margin-left:6vw;
 .question a {
   color: #515f79;
   text-decoration: none;
+}
+
+.noTable{
+  margin:0 auto;
+  text-align: center;
+  font-size:4vw;
 }
 
 </style>
