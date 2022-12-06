@@ -99,7 +99,7 @@ export default {
       //Додавання і чек на помилку
       this.mistake = await this.tryToCreate()
       if (this.mistake === '') {
-        window.location.href = '/view' + this.BType + ''
+        window.location.href = '/viewFaq'
       } else {
         this.appearMistakes = "Виникла помилка при створенні..."
       }
