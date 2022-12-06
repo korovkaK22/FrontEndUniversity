@@ -8,9 +8,9 @@
         <router-link to="/home">На головну</router-link>
       </div>
 
-<!--      <div class="noDB">-->
-<!--        <img :src="require('../Images/noDataBase.png')" alt="ТщВи"/>-->
-<!--      </div>-->
+      <div class="noDB">
+        <img :src="require('../Images/noDataBase.png')" alt="NoDB.png"/>
+      </div>
 
     </div>
 
@@ -18,13 +18,10 @@
 </template>
 
 <script>
-//import axios from "axios";
-//import {CheckExist} from "@/components/Validation/CheckExist";
+
 
 export default {
   name: "NoConnection",
-
-
 }
 </script>
 
@@ -32,12 +29,6 @@ export default {
 
 .Vue {
   text-align: center;
-  background: url('../Images/noDataBase.png') no-repeat;
-  margin-left: 10vw;
-  background-size: 80vw;
-  height: 40vw;
-  margin-top:-5vw;
-
 }
 
 a {
@@ -46,16 +37,14 @@ a {
 }
 
 .noDB {
-  scale: 1.2;
+  scale: 1.1;
   margin-top: 3vw;
-  opacity: 20%;
-  z-index: -1;
 }
 
 .text {
-  background: #1d191f;
+  font-size: 2.5vw;
   margin: 0 auto;
-  margin-top: 3.5vw;
+
 
 }
 
