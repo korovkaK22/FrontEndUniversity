@@ -10,10 +10,14 @@
 
 
     <div class="row">
+
+      <div class="item">
+        <router-link to="/table">Таблиця</router-link>
+      </div>
+
       <div class="item">
         <router-link to="/">Home</router-link>
       </div>
-
 
       <div class="item">
         <router-link to="/viewFaq">FAQ</router-link>
