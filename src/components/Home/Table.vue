@@ -10,10 +10,10 @@
 
       <div class="item">
         <div class="selectBox">
-          <select v-model="newOption" >
-            <option value="" disabled selected >Факультет</option>
-            <option v-for="o in options" :key="o.id"
-                    v-bind:value=o.id>{{o.name}}</option>
+          <select v-model="newFirst" >
+            <option value="" disabled selected >Вибрати</option>
+            <option v-for="(o, index) in firstList" :key="o.name"
+                    v-bind:value=index>{{o}}</option>
           </select>
         </div>
       </div>
@@ -22,9 +22,9 @@
 
       <div class="item">
         <div class="selectBox">
-          <select v-model="newOption" >
-            <option value="" disabled selected >Факультет</option>
-            <option v-for="o in options" :key="o.id"
+          <select v-model="newSecond" >
+            <option value="" disabled selected >Вибрати</option>
+            <option v-for="o in secondList" :key="o.id"
                     v-bind:value=o.id>{{o.name}}</option>
           </select>
         </div>
@@ -33,7 +33,7 @@
     </div>
 
     <div class=itemButton>
-      <a @click=" createNew();" class="green-shine-button">Вибрати</a>
+      <a @click=" createTable();" class="green-shine-button">Вибрати</a>
     </div>
 
 
@@ -43,9 +43,40 @@
 </template>
 
 <script>
+import {CheckExist} from "@/components/Validation/CheckExist";
+
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
-  name: "Table"
+  name: "Table",
+
+  data: () => ({
+    firstList:[],
+    secondList:[],
+    newFirst:'',
+    newSecond:'',
+
+  }),
+
+  mounted() {
+    this.initialise();
+    this.checkConnection();
+  },
+
+  methods: {
+    async initialise(){
+      this.firstList=['Розклад для групи','Студенти з групи','Розклад для вчителя','Відділи для факультету'];
+
+
+    },
+
+
+    async createTable(){
+
+      console.log(this.newFirst)
+    },
+
+    async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}}, }
+
 }
 </script>
 
@@ -62,7 +93,6 @@ export default {
   margin: 1vw auto;
   display: flex;
   width: 50vw;
-  background: rgba(29, 25, 31, 0.18);
   justify-content:space-around;
   font-size: 3vw;
 }
@@ -72,7 +102,6 @@ width:15vw;
 }
 
 .itemButton{
-
 }
 
 
@@ -119,7 +148,7 @@ width:15vw;
 .green-shine-button {
   text-decoration: none;
   display: inline-block;
-  padding: 10px 30px;
+  padding: 3px 20px;
   margin: 10px 20px;
   position: relative;
   overflow: hidden;
