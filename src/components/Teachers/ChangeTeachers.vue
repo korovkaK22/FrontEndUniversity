@@ -29,7 +29,7 @@
       </div>
 
       <div class=itemButton>
-        <a @click=" editObject();" class="green-shine-button">Створити</a>
+        <a @click=" editObject();" class="green-shine-button">Зберегти</a>
       </div>
 
      </form>

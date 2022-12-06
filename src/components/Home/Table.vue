@@ -6,36 +6,229 @@
 
     <div class="row">
 
-    Вибрати
+      Вибрати
 
-      <div class="item">
-        <div class="selectBox">
-          <select v-model="newFirst" >
-            <option value="" disabled selected >Вибрати</option>
-            <option v-for="(o, index) in firstList" :key="o.name"
-                    v-bind:value=index>{{o}}</option>
-          </select>
+        <div class="item">
+          <div class="selectBox">
+            <select v-model="newFirst"  @change="firstChange()">
+              <option value="" disabled  >Вибрати</option>
+              <option v-for="(o, index) in firstList" :key="o.name"
+                      v-bind:value=index>{{o}}</option>
+            </select>
+          </div>
         </div>
-      </div>
 
-      з
+        :
 
-      <div class="item">
-        <div class="selectBox">
-          <select v-model="newSecond" >
-            <option value="" disabled selected >Вибрати</option>
-            <option v-for="o in secondList" :key="o.id"
-                    v-bind:value=o.id>{{o.name}}</option>
-          </select>
+        <div class="item">
+          <div class="selectBox">
+            <select v-model="newSecond" @change="secondChange()">
+              <option value="-1" disabled selected  >Вибрати</option>
+              <option v-for="o in secondList" :key="o.id"
+                      v-bind:value=o.id>
+                {{ getName(o.id, secondList) }}
+              </option>
+            </select>
+          </div>
         </div>
-      </div>
 
     </div>
 
-    <div class=itemButton>
-      <a @click=" createTable();" class="green-shine-button">Вибрати</a>
+    <!--================Таблиці================-->
+      <div class=list v-if="this.lists!==null">
+        <!--=======Розклад для групи======-->
+
+        <div v-if="newFirst===0">
+          <div v-if="lists.length!==0">Розклад Для групи</div>
+          <table class="styled-table"  v-if="lists.length!==0">
+            <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Викладач</th>
+              <th scope="col">Дисципліна</th>
+              <th scope="col">Група</th>
+              <th scope="col">Час</th>
+              <th scope="col">Аудиторія</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="l in lists" :key="l.id">
+              <td>
+                <router-link v-bind:to="('/seeSchedules/?id='+l.id)">{{ l.id }}</router-link> <br>
+              </td>
+
+              <td>
+                <router-link v-bind:to="('/seeTeachers/?id='+l.teacher_id)">
+                  {{ getName(l.teacher_id, teachers) }}
+                </router-link>
+              </td>
+
+              <td>
+                <router-link v-bind:to="('/seeDisciplines/?id='+l.discipline_id)">
+                  {{    getName(l.discipline_id, disciplines) }}
+                </router-link>
+              </td>
+
+              <td>
+                <router-link v-bind:to="('/seeGroups/?id='+l.group_id)">
+                  {{ getName(l.group_id, groups) }}
+                </router-link>
+              </td>
+
+              <td>
+                {{ l.time }}
+              </td>
+
+              <td>
+                {{ l.classroom }}
+              </td>
+
+            </tr>
+            </tbody>
+          </table>
+
+          <div class = noTable v-else>
+            Ще не додано розкладу для цієї групи.
+            <router-link v-bind:to="('/createSchedules')">Додати розклад</router-link>
+          </div>
+        </div>
+
+      <!--  ===========Студенти в групі==================-->
+        <div v-if="newFirst===1">
+          <div v-if="lists.length!==0">Список студентів в групі</div>
+          <table class="styled-table"  v-if="lists.length!==0">
+            <thead>
+            <tr>
+              <th scope="col">Ім'я</th>
+              <th scope="col">Почта</th>
+              <th scope="col">Номер телефону</th>
+              <th scope="col">Група</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="l in lists" :key="l.id">
+              <td>
+                <router-link v-bind:to="('/seeStudents/?id='+l.id)">{{ l.name }}</router-link> <br>
+              </td>
+              <td> {{ l.email }} </td>
+              <td> {{ l.phone }} </td>
+              <td>
+                <router-link v-bind:to="('/seeGroups/?id='+l.group_id)">
+                  {{ getName(l.group_id, this.groups) }}
+                </router-link>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+          <div class = noTable v-else>
+            Ще не додано студентів для цієї групи.
+            <router-link v-bind:to="('/createStudents')">Додати студента</router-link>
+          </div>
+        </div>
+
+<!--       =========== Розклад для викладача===========-->
+
+        <div v-if="newFirst===2">
+             <div v-if="lists.length!==0">Розклад Для Викладача</div>
+          <table class="styled-table"  v-if="lists.length!==0">
+            <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Викладач</th>
+              <th scope="col">Дисципліна</th>
+              <th scope="col">Група</th>
+              <th scope="col">Час</th>
+              <th scope="col">Аудиторія</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="l in lists" :key="l.id">
+              <td>
+                <router-link v-bind:to="('/seeSchedules/?id='+l.id)">{{ l.id }}</router-link> <br>
+              </td>
+
+              <td>
+                <router-link v-bind:to="('/seeTeachers/?id='+l.teacher_id)">
+                  {{ getName(l.teacher_id, teachers) }}
+                </router-link>
+              </td>
+
+              <td>
+                <router-link v-bind:to="('/seeDisciplines/?id='+l.discipline_id)">
+                  {{    getName(l.discipline_id, disciplines) }}
+                </router-link>
+              </td>
+
+              <td>
+                <router-link v-bind:to="('/seeGroups/?id='+l.group_id)">
+                  {{ getName(l.group_id, groups) }}
+                </router-link>
+              </td>
+
+              <td>
+                {{ l.time }}
+              </td>
+
+              <td>
+                {{ l.classroom }}
+              </td>
+
+            </tr>
+            </tbody>
+          </table>
+
+          <div class = noTable v-else>
+            Ще не додано розкладу для цієї групи.
+            <router-link v-bind:to="('/createSchedules')">Додати розклад</router-link>
+          </div>
+        </div>
+
+<!-- =========== Відділи факультету===========-->
+
+        <div v-if="newFirst===3">
+          <div v-if="lists.length!==0">Відділи факультету</div>
+          <table class="styled-table" v-if="lists.length!==0" >
+            <thead>
+            <tr>
+              <th scope="col">Ім'я</th>
+              <th scope="col">Абревіатура</th>
+              <th scope="col">Факультет</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="l in lists" :key="l.id">
+              <td>
+                <router-link v-bind:to="('/seeDepartments/?id='+l.id)">{{ l.name }}</router-link> <br>
+              </td>
+              <td>
+                {{ l.short_name }}
+              </td>
+              <td>
+                <router-link v-bind:to="('/seeFaculties/?id='+l.faculty_id)">
+                  {{getName(l.faculty_id, faculties)}}
+                </router-link>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div class = noTable v-else>
+            Ще не додано відділів для цього факультету.
+            <router-link v-bind:to="('/createDepartments')">Додати відділ</router-link>
+          </div>
+        </div>
+
+
+
     </div>
 
+    <!--======== Помилка===========-->
+    <div class=appearMistake>
+      {{ appearMistakes }}
+    </div>
+    <div class=mistake>
+      {{ mistake }}
+    </div>
 
   </div>
 
@@ -44,6 +237,8 @@
 
 <script>
 import {CheckExist} from "@/components/Validation/CheckExist";
+import axios from "axios";
+import {GetListForTable} from "@/components/Validation/GetListForTable";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -53,8 +248,18 @@ export default {
     firstList:[],
     secondList:[],
     newFirst:'',
-    newSecond:'',
+    newSecond:-1,
 
+    lists:null,
+    teachers:[],
+    disciplines:[],
+    groups:[],
+    students:[],
+    schedules:[],
+    faculties:[],
+
+    mistake:'',
+    appearMistakes: '',
   }),
 
   mounted() {
@@ -65,15 +270,72 @@ export default {
   methods: {
     async initialise(){
       this.firstList=['Розклад для групи','Студенти з групи','Розклад для вчителя','Відділи для факультету'];
-
+      this.teachers = (await (axios.get('http://localhost:8080/teachers/viewALL'))).data;
+      this.disciplines = (await (axios.get('http://localhost:8080/disciplines/viewALL'))).data;
+      this.groups = (await (axios.get('http://localhost:8080/groups/viewALL'))).data;
+      this.students = (await (axios.get('http://localhost:8080/students/viewALL'))).data;
+      this.schedules = (await (axios.get('http://localhost:8080/schedules/viewALL'))).data;
+      this.faculties = (await (axios.get('http://localhost:8080/faculties/viewALL'))).data;
+      this.departments = (await (axios.get('http://localhost:8080/departments/viewALL'))).data;
 
     },
 
+    async firstChange(){
+      this.newSecond=-1;
+      this.lists=null;
+        switch (this.newFirst) {
+          case 0:
+            await this.initSecondList('groups');
+            break;
+          case 1:
+            await this.initSecondList('groups');
+            break;
+          case 2:
+            await this.initSecondList('teachers');
+            break;
+          case 3:
+            await this.initSecondList('faculties');
+            break;
+        }
 
-    async createTable(){
-
-      console.log(this.newFirst)
     },
+
+    async initSecondList(path){
+      try {
+        this.secondList = (await (axios.get('http://localhost:8080/' + path + '/viewALL'))).data;
+      }catch (error){
+        this.appearMistakes = "Виникла помилка при створенні..."
+        this.mistake= error.name;
+      }
+    },
+
+    async secondChange(){
+      switch (this.newFirst) {
+        case 0:
+          this.lists= GetListForTable.getSchedulesForGroup(this.schedules, this.newSecond);
+          break;
+        case 1:
+          this.lists= GetListForTable.getStudentsForGroup(this.students, this.newSecond);
+          break;
+        case 2:
+          this.lists= GetListForTable.getSchedulesForTeachers(this.schedules, this.newSecond);
+          break;
+        case 3:
+          this.lists= GetListForTable.getDepartmentsForFaculties(this.departments, this.newSecond);
+          break;
+      }
+
+    },
+
+    getName(id, array){
+      let result = null;
+      for (const element of array) {
+        if (element.id ===id){
+          result=element;}
+      }
+      return result!==null ?  result.name: null;
+    },
+
 
     async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}}, }
 
@@ -83,103 +345,91 @@ export default {
 <style scoped>
 .Vue{
   text-align: center;
+  margin: 1vw auto;
+  width: 100%;
+  font-size: 2vw;
 }
 
 .titleText{
   font-size: 3vw;
 }
 
+
+
 .row{
   margin: 1vw auto;
   display: flex;
-  width: 50vw;
+  width: 60vw;
   justify-content:space-around;
   font-size: 3vw;
 }
 
 .item{
-width:15vw;
+width:20vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
 }
 
-.itemButton{
+.mistake{
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font:1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 2vw;
 }
 
+.appearMistake {
+  text-align: center;
+  font-style: italic;
+  font-weight: lighter;
+  font: 1.0em "Fira Sans", sans-serif;
+  color: #9d0000;
+  font-size: 3vw;
+}
 
-
-/*=======Кнопочки красиві========== */
-
-.red-shine-button {
+a {
+  color: #3c5994;
   text-decoration: none;
-  display: inline-block;
-  padding: 10px 30px;
-  margin: 10px 20px;
-  position: relative;
-  overflow: hidden;
-  border: 2px solid #fe6637;
-  border-radius: 8px;
-  font-family: 'Montserrat', sans-serif;
-  color: #fe6637;
-  transition: .2s ease-in-out;
-}
-
-.red-shine-button:before {
-  content: "";
-  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  top: -8px;
-  left: -75px;
-  transform: skewX(-45deg);
-}
-
-.red-shine-button:hover {
-  background: #fe6637;
-  color: #fff;
-}
-
-.red-shine-button:hover:before {
-  left: 150px;
-  transition: .5s ease-in-out;
 }
 
 
 
-.green-shine-button {
-  text-decoration: none;
-  display: inline-block;
-  padding: 3px 20px;
-  margin: 10px 20px;
-  position: relative;
-  overflow: hidden;
-  border: 2px solid #53b43b;
-  border-radius: 8px;
-  font-family: 'Montserrat', sans-serif;
-  color: #52b33c;
-  transition: .2s ease-in-out;
+/*=======Табличка красива======*/
+
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px auto;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table thead tr {
+  background-color: #7880c9;
+  color: #ffffff;
+  text-align: left;
+}
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  text-align: center;
+}
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
 }
 
-.green-shine-button:before {
-  content: "";
-  background: linear-gradient(90deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .5));
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  top: -8px;
-  left: -75px;
-  transform: skewX(-45deg);
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
 }
 
-.green-shine-button:hover {
-  background: #51b23d;
-  color: #fff;
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #777fc8;
 }
-
-.green-shine-button:hover:before {
-  left: 150px;
-  transition: .5s ease-in-out;
+.styled-table tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
 }
-
 
 
 /*================Селект бокс================*/

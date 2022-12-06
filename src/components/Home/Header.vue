@@ -4,7 +4,7 @@
 
 
     <div class="row">
-      тут типу буде лого колись
+      Лабораторна робота з Вебу.
     </div>
 <!--    <router-link to="/faq">Home</router-link>-->
 
