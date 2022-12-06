@@ -6,7 +6,7 @@
 
     <div class=list>
 
-      <table class="styled-table">
+      <table class="styled-table"  v-if="lists.length!==0">
         <thead>
         <tr>
           <th scope="col">Id</th>
@@ -52,6 +52,12 @@
         </tr>
         </tbody>
       </table>
+
+      <div class = noTable v-else>
+        Ще не додано розкладу.
+        <router-link v-bind:to="('/create'+BType)">Додати розклад</router-link>
+      </div>
+
     </div>
   </div>
 </template>

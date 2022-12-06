@@ -6,7 +6,7 @@
 
     <div class=list>
 
-            <table class="styled-table">
+            <table class="styled-table" v-if="lists.length!==0">
               <thead>
               <tr>
                 <th scope="col">Ім'я</th>
@@ -24,6 +24,12 @@
               </tr>
               </tbody>
             </table>
+
+      <div class = noTable v-else>
+        Ще не додано Факультетів.
+        <router-link v-bind:to="('/create'+BType)">Додати факультет</router-link>
+      </div>
+
     </div>
   </div>
 </template>
@@ -52,7 +58,7 @@ export default {
 
   methods: {
     async initialise() {
-      this.lists = (await (axios.get('http://localhost:8080/'+this.type+'/viewALL'))).data;
+     this.lists = (await (axios.get('http://localhost:8080/'+this.type+'/viewALL'))).data;
       },
     async checkConnection(){if (!await(CheckExist.checkConnection())){window.location.href = '/noConnection'}},
 

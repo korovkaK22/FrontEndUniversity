@@ -6,7 +6,7 @@
 
     <div class=list>
 
-      <table class="styled-table">
+      <table class="styled-table"  v-if="lists.length!==0">
         <thead>
         <tr>
           <th scope="col">Ім'я</th>
@@ -30,6 +30,12 @@
         </tr>
         </tbody>
       </table>
+
+      <div class = noTable v-else>
+        Ще не додано студентів.
+        <router-link v-bind:to="('/create'+BType)">Додати студента</router-link>
+      </div>
+
     </div>
   </div>
 </template>
